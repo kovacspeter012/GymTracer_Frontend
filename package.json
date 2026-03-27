@@ -1,6 +1,9 @@
 {
   "name": "gym-tracer-frontend",
   "version": "0.0.0",
+  "imports": {
+    "#theme": "./src/styles.css"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
