@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { LoginCredentials, UserLoginDto } from '../models/login.model';
 import { UserModel } from '../models/user.model';
 import { LogoutDto } from '../models/logout.model';
+import { RegistrationCredentials, RegistrationUserDto } from '../models/registration.model';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +45,10 @@ export class AuthService {
 
   get actingUserRole(){
     return this.actingUser?.role ?? UserRole.not_found;
+  }
+
+  Register(user: RegistrationCredentials){
+    return this.http.post<RegistrationUserDto>(`${this.apiUrl}/Auth/registration`, user);
   }
 
   Login(user: LoginCredentials){
