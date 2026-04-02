@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
   imports: [FormsModule, RouterLink, NgClass],
   templateUrl: './login.html',
   styleUrl: './login.css',
+  host: { class: 'flex-1 flex flex-col w-full' }
 })
 export class Login {
   private router = inject(Router);
