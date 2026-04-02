@@ -6,7 +6,7 @@
 }
 
 .nav-element {
-    @apply flex justify-center items-center w-full md:w-fit max-md:py-4 md:h-full md:px-3 self-center rounded-2xl transition-all duration-300 ease-in-out;
+    @apply flex justify-center items-center w-full md:w-fit max-md:py-4 md:h-full md:px-3 self-center rounded-2xl transition-all duration-300 ease-in-out cursor-pointer;
     @apply hover:bg-black hover:text-white hover:md:shadow-xl hover:md:px-4;
 }
 

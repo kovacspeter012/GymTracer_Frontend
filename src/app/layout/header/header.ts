@@ -2,6 +2,8 @@ import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth.service';
+import { UserRole } from '../../models/user.role.model';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +13,9 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class Header {
   theme = inject(ThemeService);
+  auth = inject(AuthService);
+
+  UserRole = UserRole;
 
   menuOpen = false;
 

@@ -22,10 +22,29 @@
          [ngClass]="menuOpen ? 'max-md:max-h-[250px]' : 'max-md:max-h-0'">
       
       <div class="flex flex-col md:flex-row select-none transition-colors duration-300 ease-in-out md:h-full md:items-center">
-        
+
         <a class="nav-element" routerLink="/">Kezdőlap</a>
-        <a class="nav-element" routerLink="/">Kezdőlap</a>
-        <a class="nav-element" routerLink="/">Kezdőlap</a>
+        @if(auth.getActingUserRole() === UserRole.not_found){
+          <a class="nav-element" routerLink="/login">Bejelentkezés</a>
+          <a class="nav-element" routerLink="/registration">Regisztráció</a>
+        }
+        @else if(theme.isStaffMode && (auth.getActingUserRole() === UserRole.staff || auth.getActingUserRole() === UserRole.admin)){
+          <a class="nav-element" routerLink="/users">Felhasználók</a>
+          <a class="nav-element" routerLink="/statistics">Statisztikák</a>
+          @if(auth.getActingUserRole() === UserRole.admin){
+            <a class="nav-element" routerLink="/card-usage">Kártyahasználat</a>
+            <a class="nav-element" routerLink="/income">Bevétel</a>
+          }
+        }
+        @else {
+          <a class="nav-element" routerLink="/trainings">Edzések</a>
+          <a class="nav-element" routerLink="/tickets">Jegyeim</a>
+          @if(auth.getActingUserRole() === UserRole.trainer){
+            <a class="nav-element" routerLink="/my-trainings">Edzéseim</a>
+          }
+          <a class="nav-element" routerLink="/cards">Kártyáim</a>
+          <a class="nav-element" routerLink="/profile">Profilom</a>
+        }
 
         <div class="flex flex-col items-center p-5">
             <mat-slide-toggle color="color" class="transition-colors duration-300" (change)="toggleStaff($event)"></mat-slide-toggle>
