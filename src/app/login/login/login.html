@@ -44,9 +44,13 @@
       </div>
 
       <div class="h-11 mb-2 w-full flex items-end">
-        @if(errorMessage) {
-          <div class="w-full p-2 text-sm text-primary-600 bg-red-50 border border-primary-200 rounded-md text-center">
-            {{ errorMessage }}
+        @if(alertMessage) {
+          <div class="w-full p-2 text-sm rounded-md text-center border transition-colors duration-300"
+              [ngClass]="{
+                'text-primary-600 bg-red-50 border-primary-200': alertType === 'error',
+                'text-green-700 bg-green-50 border-green-300': alertType === 'success'
+              }">
+            {{ alertMessage }}
           </div>
         }
       </div>

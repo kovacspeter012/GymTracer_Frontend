@@ -36,7 +36,12 @@ export class Registration {
         next: (res) => {
           this.isLoading = false;
           
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login'], { 
+            state: { 
+              message: 'Sikeres regisztráció! Kérjük, jelentkezzen be.', 
+              type: 'success' 
+            } 
+          });
         },
         error: (err) => {
           this.isLoading = false;

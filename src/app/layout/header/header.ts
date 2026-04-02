@@ -53,7 +53,12 @@ export class Header implements OnInit, OnDestroy {
             this.auth.HandleLogout();
           }
 
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login'], { 
+            state: { 
+              message: 'Inaktivitás miatt automatikusan kijelentkeztettük.', 
+              type: 'error'
+            } 
+          });
         } else {
           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
