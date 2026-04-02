@@ -37,13 +37,22 @@ export class Header implements OnInit, OnDestroy {
   startCountdown() {
     const updateTimer = () => {
       if (this.auth.validUntil) {
+        if (!this.auth.validUntil) {
+          this.remainingTime = '';
+          return; 
+        }
+
         const now = new Date().getTime();
         const distance = this.auth.validUntil.getTime() - now;
 
         if (distance <= 0) {
           this.remainingTime = 'Lejárt!';
           clearInterval(this.timerInterval);
-          // TODO: logout megcsinálása
+          
+          if (this.auth.token) {
+            this.auth.HandleLogout();
+          }
+
           this.router.navigate(['/login']);
         } else {
           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -56,6 +65,10 @@ export class Header implements OnInit, OnDestroy {
     };
 
     updateTimer();
+
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
     this.timerInterval = setInterval(updateTimer, 1000);
 
   }

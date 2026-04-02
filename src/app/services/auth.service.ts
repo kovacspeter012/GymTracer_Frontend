@@ -4,6 +4,7 @@ import { UserRole } from '../models/user.role.model';
 import { HttpClient } from '@angular/common/http';
 import { LoginCredentials, UserLoginDto } from '../models/login.model';
 import { UserModel } from '../models/user.model';
+import { LogoutDto } from '../models/logout.model';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +50,19 @@ export class AuthService {
     return this.http.post<UserLoginDto>(`${this.apiUrl}/Auth/login`, user);
   }
 
+  Logout(){
+    return this.http.post<LogoutDto>(`${this.apiUrl}/Auth/logout`, {});
+  }
+
+  HandleLogout(){
+    this.removeSession();
+
+    this.Logout().subscribe({
+      next: () => console.log('Sikeres kijelentkezés a szerverről.'),
+      error: () => console.log('Sikertelen kijelentkeztetés a szerveren, helyben sikeres'),
+    });
+  }
+
   setSession(res: UserLoginDto) {
     this.token = res.token;
     this.validUntil = new Date(res.validTo);
@@ -58,6 +72,18 @@ export class AuthService {
     localStorage.setItem('auth_token', this.token);
     localStorage.setItem('token_valid_to', this.validUntil.toISOString());
     localStorage.setItem('current_user', JSON.stringify(this.user));
+    localStorage.removeItem('pretended_user');
+  }
+
+  removeSession(){
+    this.token = null;
+    this.validUntil = null;
+    this.user = null;
+    this.pretendedUser = null;
+
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('token_valid_to');
+    localStorage.removeItem('current_user');
     localStorage.removeItem('pretended_user');
   }
 }
