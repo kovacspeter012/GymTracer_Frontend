@@ -3,6 +3,7 @@ import { Mainlayout } from './layout/mainlayout/mainlayout';
 import { MainPage } from './mainpage/main-page/main-page';
 import { Login } from './login/login/login';
 import { Registration } from './registration/registration/registration';
+import { guestGuard } from './guards/guest-guard';
 
 export const routes: Routes = [
     {
@@ -10,8 +11,8 @@ export const routes: Routes = [
         component: Mainlayout,
         children: [
             {path: '', component: MainPage},
-            {path: 'login', component: Login},
-            {path: 'registration', component: Registration}
+            {path: 'login', component: Login, canActivate: [guestGuard]},
+            {path: 'registration', component: Registration, canActivate: [guestGuard]}
         ]
     },
     {
