@@ -19,19 +19,19 @@
     </div>
 
     <div class="w-full md:w-auto md:h-full max-md:bg-primary-500 max-md:transition-all max-md:duration-300 max-md:ease-in-out max-md:overflow-hidden"
-         [ngClass]="menuOpen ? 'max-md:max-h-[250px]' : 'max-md:max-h-0'">
+         [ngClass]="menuOpen ? 'max-md:max-h-[500px]' : 'max-md:max-h-0'">
       
       <div class="flex flex-col md:flex-row select-none transition-colors duration-300 ease-in-out md:h-full md:items-center">
 
         <a class="nav-element" routerLink="/">Kezdőlap</a>
-        @if(auth.getActingUserRole() === UserRole.not_found){
+        @if(auth.actingUserRole === UserRole.not_found){
           <a class="nav-element" routerLink="/login">Bejelentkezés</a>
           <a class="nav-element" routerLink="/registration">Regisztráció</a>
         }
-        @else if(theme.isStaffMode && (auth.getActingUserRole() === UserRole.staff || auth.getActingUserRole() === UserRole.admin)){
+        @else if(theme.isStaffMode && (auth.actingUserRole === UserRole.staff || auth.actingUserRole === UserRole.admin)){
           <a class="nav-element" routerLink="/users">Felhasználók</a>
           <a class="nav-element" routerLink="/statistics">Statisztikák</a>
-          @if(auth.getActingUserRole() === UserRole.admin){
+          @if(auth.actingUserRole === UserRole.admin){
             <a class="nav-element" routerLink="/card-usage">Kártyahasználat</a>
             <a class="nav-element" routerLink="/income">Bevétel</a>
           }
@@ -39,14 +39,24 @@
         @else {
           <a class="nav-element" routerLink="/trainings">Edzések</a>
           <a class="nav-element" routerLink="/tickets">Jegyeim</a>
-          @if(auth.getActingUserRole() === UserRole.trainer){
+          @if(auth.actingUserRole === UserRole.trainer){
             <a class="nav-element" routerLink="/my-trainings">Edzéseim</a>
           }
           <a class="nav-element" routerLink="/cards">Kártyáim</a>
           <a class="nav-element" routerLink="/profile">Profilom</a>
+
+          <div class="font-semibold p-2 text-center">
+            <p class="truncate max-w-[200px] mx-auto" 
+              [title]="auth.user?.name">
+              Üdv, {{ auth.actingUser?.name }}!
+            </p>
+            <p class="text-xs font-mono text-gray-800 mt-0.5">
+                <span>{{ remainingTime }}</span>
+              </p>
+          </div>
         }
 
-        <div class="flex flex-col items-center p-5">
+        <div class="flex flex-col items-center">
             <mat-slide-toggle color="color" class="transition-colors duration-300" (change)="toggleStaff($event)"></mat-slide-toggle>
             <p>Ügykezelés</p>
         </div>

@@ -37,14 +37,12 @@ export class AuthService {
     }
   }
 
-  getActingUserRole(){
-    if(this.pretendedUser){
-      return this.pretendedUser.role;
-    }
-    else if(this.user){
-      return this.user.role;
-    }
-    return UserRole.not_found;
+  get actingUser(){
+    return this.pretendedUser ?? this.user ?? null;
+  }
+
+  get actingUserRole(){
+    return this.actingUser?.role ?? UserRole.not_found;
   }
 
   Login(user: LoginCredentials){
