@@ -54,7 +54,7 @@
       <button 
         type="submit" 
         [disabled]="loginForm.invalid || isLoading"
-        class="w-full h-12 flex justify-center items-center bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-md transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+        class="w-full h-12 flex justify-center items-center bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-md transition-all duration-300 disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed"
       >
         @if(isLoading) {
           <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
