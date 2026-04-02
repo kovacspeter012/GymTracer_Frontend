@@ -5,6 +5,8 @@
   --color-primary-400: #f87171;
   --color-primary-500: #ef4444;
   --color-primary-600: #dc2626;
+
+  --breakpoint-nav: 950px;
 }
 
 .theme-yellow {
