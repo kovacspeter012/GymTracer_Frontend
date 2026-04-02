@@ -1,0 +1,19 @@
+<section class="py-20 px-6" [ngClass]="theme.getColor()">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-12 text-center"><span class="text-primary-500">Edzései</span> Programok</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            @for (training of trainings; track $index) {
+                <div
+                class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 text-gray-200 hover:border-primary-500 transition-colors group">
+                    <img src="images/{{training.image}}" alt="{{training.name}}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">{{training.name}}</h3>
+                        <p class="text-gray-400 mb-4">{{training.description}}</p>
+                        <!-- Todo: ha nincs bejelentkezve a felhasználó akkor a login oldalra, ha be van jelentkezve akkor a jelentkezés oldalra -->
+                        <a href="#" class="text-primary-500 font-semibold group-hover:underline">Jelentkezzen most &rarr;</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
