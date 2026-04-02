@@ -4,11 +4,11 @@ import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slid
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
 import { UserRole } from '../../models/user.role.model';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [NgClass, NgOptimizedImage, MatSlideToggleModule],
+  imports: [NgClass, RouterLink, NgOptimizedImage, MatSlideToggleModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
