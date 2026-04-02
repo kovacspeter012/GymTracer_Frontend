@@ -86,4 +86,10 @@ export class AuthService {
     localStorage.removeItem('current_user');
     localStorage.removeItem('pretended_user');
   }
+
+  extendSession(newValidTo: string) {
+    this.validUntil = new Date(newValidTo);
+    
+    localStorage.setItem('token_valid_to', this.validUntil.toISOString());
+  }
 }
