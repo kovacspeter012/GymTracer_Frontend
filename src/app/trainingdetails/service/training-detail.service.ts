@@ -10,6 +10,6 @@ export class TrainingDetailService {
   http = inject(HttpClient);
 
   getTrainingById(id: number){
-    return this.http.get<TrainingDetailResponse>(`${environment}/Training/${id}`);
+    return this.http.get<TrainingDetailResponse>(`${environment.apiUrl}/Training/${id}`);
   }
 }
