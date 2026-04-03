@@ -4,6 +4,8 @@ import { MainPage } from './mainpage/main-page/main-page';
 import { Login } from './login/login/login';
 import { Registration } from './registration/registration/registration';
 import { guestGuard } from './guards/guest-guard';
+import { Trainings } from './trainings/trainings/trainings';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
     {
@@ -12,7 +14,8 @@ export const routes: Routes = [
         children: [
             {path: '', component: MainPage},
             {path: 'login', component: Login, canActivate: [guestGuard]},
-            {path: 'registration', component: Registration, canActivate: [guestGuard]}
+            {path: 'registration', component: Registration, canActivate: [guestGuard]},
+            {path: 'trainings', component: Trainings, canActivate: [authGuard]}
         ]
     },
     {
