@@ -1,4 +1,4 @@
-import { TicketType } from "./training.ticklet.model";
+import { TicketType } from "./training.tickettype.model";
 
 export type Ticket = {
   id: number;

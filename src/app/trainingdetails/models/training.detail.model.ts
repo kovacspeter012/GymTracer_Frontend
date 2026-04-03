@@ -4,6 +4,7 @@ import { TrainingUser } from "./training.user.model";
 export type TrainingDetailResponse = {
   id: number;
   name: string;
+  isApplied: boolean;
   description: string;
   image: string;
   startTime: string;
