@@ -39,6 +39,16 @@ export class TrainingDetails {
     });
   }
 
+  canApply() {
+    if (!this.training) return false;
+
+    if (this.training.users && this.auth.actingUser) {
+      return !this.training.users.some(u => u.id === this.auth.actingUser?.id);
+    }
+
+    return !this.training.isApplied;
+  }
+
   onImgError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.src = 'images/training_default.jpg';
