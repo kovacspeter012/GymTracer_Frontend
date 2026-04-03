@@ -1,11 +1,67 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { TrainingDetailResponse } from '../models/training.detail.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TrainingDetailService } from '../service/training-detail.service';
+import { ThemeService } from '../../services/theme.service';
+import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-training-details',
-  imports: [],
+  imports: [NgClass, DecimalPipe, DatePipe],
   templateUrl: './training-details.html',
   styleUrl: './training-details.css',
 })
 export class TrainingDetails {
+  trainingId: number | null = null;
+  training: TrainingDetailResponse | null = null;
+  isLoading: boolean = true;
+  errorMessage: string | null = null;
 
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  trainingDetailService = inject(TrainingDetailService);
+  theme = inject(ThemeService);
+
+  ngOnInit(){
+    this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id');
+      if (idParam) {
+        this.trainingId = Number.parseInt(idParam);
+        this.loadTrainingDetails(this.trainingId);
+      } else {
+        this.router.navigate(['/trainings']);
+      }
+    });
+  }
+
+  onImgError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'images/training_default.jpg';
+  }
+
+  loadTrainingDetails(id: number){
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    this.trainingDetailService.getTrainingById(id).subscribe({
+      next: (res) => {
+        this.training = res;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching training details', err);
+        if(err.error){
+          this.errorMessage = err.error;
+        }
+        else{
+          this.errorMessage = 'Nem sikerült betölteni az edzés adatait. Kérjük, próbálja újra később.';
+        }
+        this.isLoading = false;
+      }
+    });
+  }
+
+  goBack(){
+    this.router.navigate(['/trainings']);
+  }
 }
