@@ -6,13 +6,12 @@ import { LoginCredentials, UserLoginDto } from '../models/login.model';
 import { UserModel } from '../models/user.model';
 import { LogoutDto } from '../models/logout.model';
 import { RegistrationCredentials, RegistrationUserDto } from '../models/registration.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  apiUrl = 'http://localhost:5065/api';
-
   user : UserModel | null = null;
   pretendedUser : UserModel | null = null;
 
@@ -48,15 +47,15 @@ export class AuthService {
   }
 
   Register(user: RegistrationCredentials){
-    return this.http.post<RegistrationUserDto>(`${this.apiUrl}/Auth/registration`, user);
+    return this.http.post<RegistrationUserDto>(`${environment.apiUrl}/Auth/registration`, user);
   }
 
   Login(user: LoginCredentials){
-    return this.http.post<UserLoginDto>(`${this.apiUrl}/Auth/login`, user);
+    return this.http.post<UserLoginDto>(`${environment.apiUrl}/Auth/login`, user);
   }
 
   Logout(){
-    return this.http.post<LogoutDto>(`${this.apiUrl}/Auth/logout`, {});
+    return this.http.post<LogoutDto>(`${environment.apiUrl}/Auth/logout`, {});
   }
 
   HandleLogout(){
