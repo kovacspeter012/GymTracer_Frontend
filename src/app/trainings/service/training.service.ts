@@ -9,6 +9,12 @@ import { environment } from '../../../environments/environment';
 export class TrainingService {
   http = inject(HttpClient);
 
+  public lastFilters: AllTrainingFilter | null = null;
+  public lastResults: AllTrainingResponse[] = [];
+  public hasSearched = false;
+  
+  public preserveState = false;
+
   getAllTrainings(filter: AllTrainingFilter = {}){
     let params = new HttpParams();
 
@@ -35,5 +41,11 @@ export class TrainingService {
     }
 
     return this.http.get<AllTrainingResponse[]>(`${environment.apiUrl}/Training`, { params });
+  }
+
+  clearState(){
+    this.lastFilters = null;
+    this.lastResults = [];
+    this.hasSearched = false;
   }
 }

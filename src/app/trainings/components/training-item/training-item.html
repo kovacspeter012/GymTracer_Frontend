@@ -14,9 +14,10 @@
     <p><span class="font-semibold text-gray-700">Max résztvevő:</span> {{ training.maxParticipant }} fő</p>
   </div>
 
-  <button
-    class="w-full py-2 border border-primary-600 text-primary-600 hover:bg-primary-50 rounded font-semibold transition-colors cursor-pointer"
-    (click)="navigateTo()">
+  <a
+    class="block text-center w-full py-2 border border-primary-600 text-primary-600 hover:border-primary-500 hover:text-primary-500 rounded font-semibold transition-colors cursor-pointer"
+    (click)="preserveListState()"
+    [routerLink]="['/trainings', training.id]">
     Részletek
-  </button>
+</a>
 </div>

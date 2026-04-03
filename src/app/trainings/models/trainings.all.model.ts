@@ -18,3 +18,11 @@ export type AllTrainingFilter = {
   trainerId?: number;
   keyword?: string;
 }
+
+export type AllTrainingFilterLocal = {
+  start: Date | string;
+  end: Date | string;
+  trainerName: string;
+  trainerId?: number;
+  keyword: string;
+}

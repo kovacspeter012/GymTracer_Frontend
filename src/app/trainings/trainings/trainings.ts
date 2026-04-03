@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AllTrainingFilter, AllTrainingResponse } from '../models/trainings.all.model';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { AllTrainingFilter, AllTrainingFilterLocal, AllTrainingResponse } from '../models/trainings.all.model';
 import { ThemeService } from '../../services/theme.service';
 import { TrainingService } from '../service/training.service';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TrainingItem } from "../components/training-item/training-item";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trainings',
@@ -12,17 +13,18 @@ import { TrainingItem } from "../components/training-item/training-item";
   templateUrl: './trainings.html',
   styleUrl: './trainings.css',
 })
-export class Trainings implements OnInit {
+export class Trainings implements OnInit, OnDestroy {
 
   theme = inject(ThemeService);
   trainingService = inject(TrainingService);
+  router = inject(Router);
 
-  filters = {
+  filters: AllTrainingFilterLocal = {
     keyword: '',
     start: '',
     end: '',
     trainerName: '',
-    trainerId: null
+    trainerId: undefined
   };
 
   trainings: AllTrainingResponse[] = [];
@@ -31,8 +33,31 @@ export class Trainings implements OnInit {
   hasSearched: boolean = false;
 
   ngOnInit(){
-    this.setDefaultDates();
-    this.loadTrainings();
+    if(this.trainingService.lastFilters){
+      const saved = this.trainingService.lastFilters;
+      
+      this.filters = {
+        keyword: saved.keyword ?? '',
+        start: saved.start ?? '',
+        end: saved.end ?? '',
+        trainerName: saved.trainerName ?? '',
+        trainerId: saved.trainerId
+      };
+
+      this.trainings = this.trainingService.lastResults;
+      this.hasSearched = this.trainingService.hasSearched;
+    }
+    else{
+      this.setDefaultDates();
+      this.loadTrainings();
+    }
+  }
+
+  ngOnDestroy(){
+    const destinationUrl = this.router.url;
+    if (!destinationUrl.includes('/trainings/')) {
+      this.trainingService.clearState();
+    }
   }
 
   onSearch(){
@@ -57,14 +82,14 @@ export class Trainings implements OnInit {
       start: '',
       end: '',
       trainerName: '',
-      trainerId: null
+      trainerId: undefined
     };
     this.setDefaultDates();
     this.trainings = [];
     this.hasSearched = false;
   }
 
-  private loadTrainings(): void {
+  private loadTrainings(){
     this.isLoading = true;
     const activeFilters: AllTrainingFilter = {};
     
@@ -74,9 +99,14 @@ export class Trainings implements OnInit {
     if (this.filters.trainerName?.trim()) activeFilters.trainerName = this.filters.trainerName.trim();
     if (this.filters.trainerId) activeFilters.trainerId = this.filters.trainerId;
 
+    this.trainingService.lastFilters = { ...this.filters };
+    this.trainingService.hasSearched = this.hasSearched;
+
     this.trainingService.getAllTrainings(activeFilters).subscribe({
-      next: (response: AllTrainingResponse[]) => {
+      next: (response) => {
         this.trainings = response;
+        this.trainingService.lastResults = response;
+
         this.isLoading = false;
       },
       error: (error) => {
