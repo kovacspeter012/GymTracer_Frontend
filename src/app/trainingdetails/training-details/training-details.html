@@ -81,7 +81,7 @@
                   <p class="text-sm text-gray-600 mb-3 flex-1">{{ ticket.description }}</p>
                   <div class="text-xs text-gray-500 flex justify-between">
                     <span>Diák: {{ ticket.isStudent ? 'Igen' : 'Nem' }}</span>
-                    <span>Felhasználható: {{ ticket.maxUsage }}</span>
+                    <span>Felhasználható: {{ ticket.maxUsage }}x</span>
                   </div>
                 </div>
                 }
@@ -136,9 +136,20 @@
               </div>
 
               <button
-                class="w-full mt-8 bg-primary-600 hover:bg-primary-500 text-white font-bold py-3 px-4 rounded-md transition-colors shadow-md cursor-pointer">
+                class="w-full mt-8 bg-primary-600 hover:bg-primary-500 text-white font-bold py-3 px-4 rounded-md transition-colors shadow-md cursor-pointer"
+                (click)="openModal()">
                 Jelentkezés az edzésre
               </button>
+
+              @if (isModalOpen && training && trainingId && auth.actingUser) {
+                <training-detail-application 
+                  [userId]="auth.actingUser.id" 
+                  [trainingId]="trainingId" 
+                  [tickets]="training.tickets" 
+                  (modalClose)="closeModal()"
+                />
+              }
+
             </div>
           </div>
 

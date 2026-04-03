@@ -4,10 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TrainingDetailService } from '../service/training-detail.service';
 import { ThemeService } from '../../services/theme.service';
 import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { TrainingApplication } from "../components/training-application/training-application";
 
 @Component({
   selector: 'app-training-details',
-  imports: [NgClass, DecimalPipe, DatePipe],
+  imports: [NgClass, DecimalPipe, DatePipe, TrainingApplication],
   templateUrl: './training-details.html',
   styleUrl: './training-details.css',
 })
@@ -17,6 +19,9 @@ export class TrainingDetails {
   isLoading: boolean = true;
   errorMessage: string | null = null;
 
+  isModalOpen: boolean = false;
+
+  auth = inject(AuthService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   trainingDetailService = inject(TrainingDetailService);
@@ -64,4 +69,13 @@ export class TrainingDetails {
   goBack(){
     this.router.navigate(['/trainings']);
   }
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
 }
