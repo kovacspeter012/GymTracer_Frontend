@@ -22,12 +22,34 @@ export class TrainingApplication {
   isSubmitting: boolean = false;
   selectedTicketId: number | null = null;
 
+  private scrollPosition = 0;
+
+  private preventWheel = (e: Event) => {
+    const target = e.target as HTMLElement;
+
+    if (target.closest('.ticket-scroll-container')) {
+      return; 
+    }
+    e.preventDefault();
+  };
+
+  private lockScrollPosition = () => {
+    window.scrollTo(0, this.scrollPosition);
+  };
+
   ngOnInit() {
-    document.body.classList.add('overflow-hidden');
+    this.scrollPosition = window.scrollY;
+
+    window.addEventListener('wheel', this.preventWheel, { passive: false });
+    window.addEventListener('touchmove', this.preventWheel, { passive: false });
+
+    window.addEventListener('scroll', this.lockScrollPosition);
   }
 
   ngOnDestroy() {
-    document.body.classList.remove('overflow-hidden');
+    window.removeEventListener('wheel', this.preventWheel);
+    window.removeEventListener('touchmove', this.preventWheel);
+    window.removeEventListener('scroll', this.lockScrollPosition);
   }
 
   selectTicket(ticketId: number) {
