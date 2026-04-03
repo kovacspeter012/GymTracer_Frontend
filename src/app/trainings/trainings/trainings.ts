@@ -4,10 +4,11 @@ import { ThemeService } from '../../services/theme.service';
 import { TrainingService } from '../service/training.service';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TrainingItem } from "../components/training-item/training-item";
 
 @Component({
   selector: 'app-trainings',
-  imports: [NgClass, FormsModule],
+  imports: [NgClass, FormsModule, TrainingItem],
   templateUrl: './trainings.html',
   styleUrl: './trainings.css',
 })
