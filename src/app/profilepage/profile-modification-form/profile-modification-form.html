@@ -1,4 +1,4 @@
-<div id="editProfileModal"
+<div id="editProfileModal" [ngClass]="theme.getColor()"
     class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm transition-opacity">
 
     <div
@@ -7,7 +7,7 @@
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-700 bg-gray-800/50">
             <h2 class="text-xl font-bold text-white">Edit Profile</h2>
             <button class="text-gray-400 hover:text-white transition-colors focus:outline-none"
-                aria-label="Close modal">
+                aria-label="Close modal" (click)="cancel()">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                     </path>
@@ -15,7 +15,7 @@
             </button>
         </div>
 
-        <form class="p-6 space-y-5">
+        <form #userDataModifyForm="ngForm" (ngSubmit)="onSubmit(userDataModifyForm)" class="p-6 space-y-5">
 
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
@@ -26,9 +26,12 @@
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                     </div>
-                    <input type="text" id="name" name="name" value="asd"
+                    <input type="text" id="name" name="name" [(ngModel)]="userData!.name" #nameInput="ngModel" minlength="3"
                         class="w-full pl-10 pr-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-colors"
                         required>
+                    @if(nameInput.invalid && (nameInput.dirty || nameInput.touched)) {
+                        <p class="absolute -bottom-5 left-1 text-sm text-primary-600">A név megadása kötelező (min. 3 karakter).</p>
+                    }
                 </div>
             </div>
 
@@ -42,9 +45,12 @@
                             </path>
                         </svg>
                     </div>
-                    <input type="email" id="email" name="email" value="asd@gmail.com"
+                    <input type="email" id="email" name="email" [(ngModel)]="userData!.email" #emailInput="ngModel" email
                         class="w-full pl-10 pr-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-colors"
                         required>
+                    @if(emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
+                        <p class="absolute -bottom-5 left-1 text-sm text-primary-600">Kérjük, adjon meg egy érvényes e-mail címet.</p>
+                    }
                 </div>
             </div>
 
@@ -58,21 +64,23 @@
                             </path>
                         </svg>
                     </div>
-                    <input type="date" id="birthDate" name="birthDate"
+                    <input type="date" id="birthDate" name="birthDate" [(ngModel)]="userDataDate" #dateInput="ngModel"
                         class="w-full pl-10 pr-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:outline-none transition-colors">
                 </div>
-                <p class="text-xs text-gray-500 mt-1.5">You haven't set a birth date yet.</p>
+                @if (userData!.birthDate == null) {
+                    <p class="text-xs text-gray-500 mt-1.5">You haven't set a birth date yet.</p>
+                }
             </div>
 
         </form>
 
         <div class="flex items-center justify-end px-6 py-4 border-t border-gray-700 bg-gray-800/50 gap-3">
-            <button type="button"
+            <button type="button" (click)="cancel()"
                 class="px-5 py-2.5 text-sm font-medium text-gray-300 hover:text-white bg-transparent hover:bg-gray-700 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-gray-600">
                 Cancel
             </button>
-            <button type="submit"
-                class="px-5 py-2.5 text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 rounded-xl shadow-lg shadow-orange-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+            <button type="submit" [disabled]="!userDataModifyForm.valid" (click)="onSubmit(userDataModifyForm)"
+                class="px-5 py-2.5 text-sm font-bold text-white bg-primary-500 hover:bg-primary-600 rounded-xl shadow-lg shadow-primary-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-800">
                 Save Changes
             </button>
         </div>

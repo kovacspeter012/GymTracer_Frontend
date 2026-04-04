@@ -13,4 +13,8 @@ export class UserdataService {
   getUserData(id: number) {
     return this.httpService.get<UserProfileModel>(`${this.apiUrl}/User/${id}/profile`);
   }
+
+  modifyUserData(id: number, data: UserProfileModel) {
+    return this.httpService.put<UserProfileModel>(`${this.apiUrl}/User/${id}/profile`, data);
+  }
 }

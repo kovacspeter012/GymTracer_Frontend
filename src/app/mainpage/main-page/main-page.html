@@ -13,12 +13,12 @@
         </p>
          @if (!currentUser) {
             <a [routerLink]="['/login']"
-                class="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition duration-300">
+                class="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition duration-300 hover:cursor-pointer">
                 Bejelentkezés
             </a>
         } @else {
             <a [routerLink]="['/trainings']"
-                class="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition duration-300">
+                class="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition duration-300 hover:cursor-pointer">
                 Edzések
             </a>
         }
@@ -38,18 +38,18 @@
                 
                  @if (!currentUser) {
                     <a [routerLink]="['/registration']"
-                    class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300">
+                    class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:cursor-pointer">
                     Regisztráció
                     </a>
                 } @else {
                     <!-- //TODO: "Jegy vásárlása" gomb átirányít a jegyek vásárlása oldalra -->
                     <a
-                        class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300">
+                        class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:cursor-pointer">
                         Jegy vásárlása
                     </a>
                 }
                 <a
-                    href="#ticket-table" class="border border-gray-600 hover:bg-gray-800 text-white font-bold py-3 px-8 rounded-full transition duration-300" >
+                    href="#ticket-table" class="border border-gray-600 hover:bg-gray-800 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:cursor-pointer" >
                     Jegyárak
                 </a>
             </div>
