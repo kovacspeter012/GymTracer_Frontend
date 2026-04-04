@@ -6,14 +6,14 @@
 }
 
 .nav-element {
-    @apply flex justify-center items-center w-full md:w-fit max-md:py-4 md:h-full md:px-3 self-center rounded-2xl transition-all duration-300 ease-in-out;
-    @apply hover:bg-black hover:text-white hover:md:shadow-xl hover:md:px-4;
+    @apply flex justify-center items-center w-full nav:w-fit max-nav:py-4 nav:h-full nav:px-3 self-center rounded-2xl transition-all duration-300 ease-in-out cursor-pointer;
+    @apply hover:bg-black hover:text-white hover:nav:shadow-xl hover:nav:px-4;
 }
 
 .nav-element:first-child{
-    @apply max-md:rounded-t-none
+    @apply max-nav:rounded-t-none
 }
 
 .nav-element:last-child{
-    @apply max-md:rounded-b-none
+    @apply max-nav:rounded-b-none
 }
