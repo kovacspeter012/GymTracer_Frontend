@@ -1,9 +1,15 @@
 <section class="py-20 px-6 bg-gray-800" [ngClass]="theme.getColor()">
     <div class="max-w-4xl mx-auto">
         <h2 class="text-3xl font-bold mb-12 text-center underline text-primary-600 decoration-primary-400 underline-offset-8">
-            Bérlet árak
+            Jegy árak
         </h2>
-        <div class="overflow-hidden rounded-lg border border-gray-700 shadow-xl">
+        @if (tickets.length === 0) {
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2 text-center text-primary-500">Hiba</h3>
+                    <p class="text-gray-400 mb-4 text-center">A jegyárak átmenetileg nem érhetőek el.</p>
+                </div>
+        }@else{
+            <div class="overflow-hidden rounded-lg border border-gray-700 shadow-xl">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-700 text-gray-200">
@@ -22,5 +28,7 @@
                 </tbody>
             </table>
         </div>
+        }
+        
     </div>
 </section>

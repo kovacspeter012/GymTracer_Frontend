@@ -3,10 +3,11 @@ import { ThemeService } from '../../services/theme.service';
 import { NgClass } from '@angular/common';
 import { TrainingService } from '../service/training-service';
 import { TrainingModel } from '../models/trainingModel';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-training-cards',
-  imports: [NgClass],
+  imports: [NgClass, RouterLink],
   templateUrl: './training-cards.html',
   styleUrl: './training-cards.css',
 })
@@ -14,6 +15,7 @@ export class TrainingCards implements OnInit {
     
     theme = inject(ThemeService);
     trainingService = inject(TrainingService);
+    currentUser: string | null = localStorage.getItem('current_user');
 
     trainings: TrainingModel[] = [];
 

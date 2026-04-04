@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TrainingModel } from '../models/trainingModel';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingService {
-  apiUrl = 'http://localhost:5065/api';
+  apiUrl = environment.apiUrl;
   constructor(private httpService: HttpClient) {}
   
   getTrainings(startDate: Date, endDate: Date) {

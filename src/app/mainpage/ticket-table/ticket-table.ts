@@ -11,10 +11,10 @@ import { NgClass } from '@angular/common';
   styleUrl: './ticket-table.css',
 })
 export class TicketTable implements OnInit {
-  tickets: TicketModel[] = [];
   theme = inject(ThemeService);
-
-  constructor(private ticketsService: TicketsService) {}
+  ticketsService = inject(TicketsService);
+  
+  tickets: TicketModel[] = [];
 
   ngOnInit(): void {
     this.ticketsService.getTickets().subscribe((response) => {
