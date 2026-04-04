@@ -39,6 +39,13 @@ export class TrainingDetails {
     });
   }
 
+  endedInPast(){
+    const now = new Date().getTime();
+    const distance = new Date(this.training?.endTime ?? 0).getTime() - now;
+
+    return distance <= 0;
+  }
+
   canApply() {
     if (!this.training) return false;
 
