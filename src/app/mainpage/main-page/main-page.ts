@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TicketsService } from '../service/ticket-service';
 import { TicketTable } from '../ticket-table/ticket-table';
 import { ThemeService } from '../../services/theme.service';
 import { NgClass } from '@angular/common';
 import { TrainingCards } from '../training-cards/training-cards';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { UserModel } from '../../models/user.model';
 
 @Component({
   selector: 'app-main-page',
@@ -15,6 +16,7 @@ import { Router, RouterLink } from '@angular/router';
 export class MainPage{
   theme = inject(ThemeService)
   router = inject(Router);
+  authService = inject(AuthService);
 
-  currentUser: string | null = localStorage.getItem('current_user');
+  currentUser: UserModel | null = this.authService.actingUser;
 }

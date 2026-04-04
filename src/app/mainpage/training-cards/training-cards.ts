@@ -4,6 +4,8 @@ import { NgClass } from '@angular/common';
 import { TrainingService } from '../service/training-service';
 import { TrainingModel } from '../models/trainingModel';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { UserModel } from '../../models/user.model';
 
 @Component({
   selector: 'app-training-cards',
@@ -15,7 +17,9 @@ export class TrainingCards implements OnInit {
     
     theme = inject(ThemeService);
     trainingService = inject(TrainingService);
-    currentUser: string | null = localStorage.getItem('current_user');
+    authService = inject(AuthService);
+
+    currentUser: UserModel | null = this.authService.actingUser;
 
     trainings: TrainingModel[] = [];
 
