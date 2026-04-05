@@ -21,18 +21,19 @@ export class DeleteUserPopup {
   }
 
   DeleteClick($event: boolean) {
-    if ($event) {
-      this.userdataService.deleteUser(this.authService.actingUser!.id).subscribe({
-        next: (res) => {
-          alert("Sikeres törlés! Viszlát!");
-        },
-        error: (error) => {
-          alert("Hiba történt a törlés során! Kérem, próbálja újra később.");
-          console.log(error.message);
-        }
-      });
-      this.authService.HandleLogout();
-      this.router.navigate(['/login']);
-    }
+    // if ($event) {
+    //   this.userdataService.deleteUser(this.authService.actingUser!.id).subscribe({
+    //     next: (res) => {
+    //       alert("Sikeres törlés! Viszlát!");
+    //     },
+    //     error: (error) => {
+    //       alert("Hiba történt a törlés során! Kérem, próbálja újra később.");
+    //       console.log(error.message);
+    //     }
+    //   });
+    //   if (this.authService.pretendedUser )
+    //   this.authService.HandleLogout();
+    //   this.router.navigate(['/login']);
+    // }
   }
 }
