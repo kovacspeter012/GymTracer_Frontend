@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { UserProfileModel } from '../userprofile.model.ts/userprofile.model';
 import { ThemeService } from '../../services/theme.service';
-import { NgClass } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { UserdataService } from '../services/userdata-service';
 import { AuthService } from '../../services/auth.service';
@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-profile-modification-form',
   imports: [NgClass, FormsModule],
+  providers: [DatePipe],
   templateUrl: './profile-modification-form.html',
   styleUrl: './profile-modification-form.css',
 })
@@ -18,6 +19,7 @@ export class ProfileModificationForm implements OnInit {
   theme = inject(ThemeService);
   userdataService = inject(UserdataService);
   authService = inject(AuthService);
+  datePipe = inject(DatePipe);
 
   errorMsg: string | null = null;
 
@@ -26,9 +28,7 @@ export class ProfileModificationForm implements OnInit {
   @Output() isSuccessful = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-    if (this.userData!.birthDate) {
-      this.userDataDate = this.formatDateForInput(this.userData!.birthDate!);
-    }
+    this.userDataDate = this.datePipe.transform(this.userData!.birthDate!, 'yyyy-MM-dd') || '';
   }
 
   cancel() {
@@ -41,30 +41,30 @@ export class ProfileModificationForm implements OnInit {
       this.errorMsg = "Please fill out all required fields correctly.";
       return;
     }
-    this.userData!.birthDate = new Date(this.userDataDate);
+    
+    if ((this.userDataDate === '' && this.userData!.birthDate !== null)) {
+      this.errorMsg = "Nem megfelelő dátumformátum. Kérem, válasszon egy érvényes dátumot.";
+      return;
+    }
+    else if ((Number(this.datePipe.transform(this.userDataDate, 'yyyy')) < 1900) || (Number(this.datePipe.transform(this.userDataDate, 'yyyy')) > (new Date().getFullYear() - 1))){
+      this.errorMsg = "A dátumnak 1900 és a tavalyi év között kell lennie.";
+      return;
+    }
+    else if (this.userDataDate !== '' && this.userData!.birthDate === null){
+      this.userData!.birthDate = new Date(this.userDataDate);
+    }
+    else if (this.userDataDate !== '' && this.userData!.birthDate !== null){
+      this.userData!.birthDate = new Date(this.userDataDate);
+    }
+
     this.userdataService.modifyUserData(this.authService.user!.id, this.userData!).subscribe({
-      next: (res) => {
-        console.log(res);
-        
+      next: (res) => {        
         this.isSuccessful.emit(true);
       },
       error: (error) => {
-        console.log(error.url);
-        this.isSuccessful.emit(false);
+        console.log(error.message);
+        this.errorMsg = "An error occurred while updating your profile. Please try again later.";
       }
     });
-  }
-
-  formatDateForInput(date: Date | null): string {
-    if (!date) return '';
-    const d = new Date(date);
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    const year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-'); 
   }
 }
