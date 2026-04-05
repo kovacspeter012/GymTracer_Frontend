@@ -32,8 +32,7 @@ export class CardsList implements OnInit {
         this.cardsOfUser = res;
       },
       error: (error) => {
-        alert("Hiba történt a kártyák lekérése során! Kérem, próbálja újra később.");
-        console.log(error.message);
+        this.cardsOfUser = [];
       }
     });
   }

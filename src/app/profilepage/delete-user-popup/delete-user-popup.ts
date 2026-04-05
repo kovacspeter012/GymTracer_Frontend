@@ -20,6 +20,7 @@ export class DeleteUserPopup {
     this.Cancel.emit();
   }
 
+  //Todo: fininsh the routing
   DeleteClick($event: boolean) {
     // if ($event) {
     //   this.userdataService.deleteUser(this.authService.actingUser!.id).subscribe({
