@@ -4,19 +4,23 @@ import { AuthService } from '../../services/auth.service';
 import { CardDataModel } from '../userprofile.model.ts/carddata.model';
 import { ThemeService } from '../../services/theme.service';
 import { DatePipe, NgClass } from '@angular/common';
+import { ShowcardPopup } from '../showcard-popup/showcard-popup';
 
 @Component({
   selector: 'app-cards-list',
-  imports: [NgClass, DatePipe],
+  imports: [NgClass, DatePipe, ShowcardPopup],
   templateUrl: './cards-list.html',
   styleUrl: './cards-list.css',
 })
 export class CardsList implements OnInit {
+
   theme = inject(ThemeService);
   carddataService = inject(CarddataService);
   authService = inject(AuthService);
+  cardIsBeingShown = false;
 
   cardsOfUser: CardDataModel[] = [];
+  selectedCard!: CardDataModel | null;
 
   ngOnInit(): void {
     this.getCards();
@@ -29,6 +33,28 @@ export class CardsList implements OnInit {
       },
       error: (error) => {
         alert("Hiba történt a kártyák lekérése során! Kérem, próbálja újra később.");
+        console.log(error.message);
+      }
+    });
+  }
+
+  showCardDetails(card: CardDataModel) {
+    this.selectedCard = card;
+    this.cardIsBeingShown = true;
+  }
+
+  closeCardDetails() {
+    this.selectedCard = null;
+    this.cardIsBeingShown = false;
+    this.getCards();
+  }
+
+  getNewCard() {
+    this.carddataService.requestNewCard(this.authService.actingUser!.id).subscribe({
+      next: (res) => {
+        this.getCards();
+      },
+      error: (error) => {
         console.log(error.message);
       }
     });
