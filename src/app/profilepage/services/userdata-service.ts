@@ -17,4 +17,8 @@ export class UserdataService {
   modifyUserData(id: number, data: UserProfileModel) {
     return this.httpService.put<UserProfileModel>(`${this.apiUrl}/User/${id}/profile`, data);
   }
+
+  deleteUser(id: number) {
+    return this.httpService.delete(`${this.apiUrl}/User/${id}`);
+  }
 }

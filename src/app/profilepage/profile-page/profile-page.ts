@@ -7,10 +7,11 @@ import { UserProfileModel } from '../userprofile.model.ts/userprofile.model';
 import { CardsList } from '../cards-list/cards-list';
 import { ProfileModificationForm } from '../profile-modification-form/profile-modification-form';
 import { Router } from '@angular/router';
+import { DeleteUserPopup } from '../delete-user-popup/delete-user-popup';
 
 @Component({
   selector: 'app-profile-page',
-  imports: [NgClass, DatePipe, CardsList, ProfileModificationForm],
+  imports: [NgClass, DatePipe, CardsList, ProfileModificationForm, DeleteUserPopup],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })
@@ -23,7 +24,8 @@ export class ProfilePage implements OnInit {
   userData: UserProfileModel | null = null;
   copyOfUserData: UserProfileModel | null = null;
   isModifing = false;
-  
+  isDeleteing = false;
+
   ngOnInit(): void {
     this.userdataService.getUserData(this.authService.actingUser!.id).subscribe({
       next: (res) => {
@@ -36,7 +38,7 @@ export class ProfilePage implements OnInit {
   }
 
   toggleModification() {
-    this.isModifing = !this.isModifing;
+    this.isModifing = true;
     this.copyOfUserData = JSON.parse(JSON.stringify(this.userData));
   }
 
@@ -51,5 +53,13 @@ export class ProfilePage implements OnInit {
         console.log(error.url);
       }
     });
+  }
+
+  deleteProfile() {
+    this.isDeleteing = true;
+  }
+
+  deleteCanceled(){
+    this.isDeleteing = false;
   }
 }

@@ -19,7 +19,7 @@
                 class="bg-gray-700 hover:bg-gray-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors border border-gray-600 text-sm mr-3 hover:cursor-pointer">
                 Profiladatok Szerkesztése
             </button>
-            <button
+            <button (click)="deleteProfile()"
                 class="bg-primary-600 hover:bg-primary-400 text-white px-5 py-2.5 rounded-xl font-medium transition-colors border border-gray-600 text-sm hover:cursor-pointer">
                 Profil Törlése
             </button>
@@ -30,14 +30,14 @@
 
         <div class="bg-gray-900/50 p-5 rounded-2xl border border-gray-700/50">
             <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-1">Regisztráció dátuma</p>
-            <p class="text-white text-lg font-medium">{{userData.creationDate | date:'yyyy MMMM dd':'':'hu'}}</p>
+            <p class="text-white text-lg font-medium">{{userData.creationDate | date:'yyyy MMMM dd.':'':'hu'}}</p>
             <p class="text-gray-500 text-sm mt-1">{{userData.creationDate | date:'HH:mm':'':'hu'}}</p>
         </div>
 
         <div class="bg-gray-900/50 p-5 rounded-2xl border border-gray-700/50">
             <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-1">Születési dátum</p>
             @if (userData.birthDate != null) {
-            <p class="text-gray-400 text-lg italic mt-1">{{userData.birthDate | date:'yyyy MMMM dd':'':'hu'}}</p>
+            <p class="text-white text-lg font-medium">{{userData.birthDate | date:'yyyy MMMM dd.':'':'hu'}}</p>
             }
             @else {
             <p class="text-gray-400 text-lg italic mt-1">Nincs megadva</p>
@@ -56,3 +56,7 @@
 @if (isModifing) {
  <app-profile-modification-form [userData]="copyOfUserData" (isSuccessful)="isSuccessful($event)"></app-profile-modification-form>
 }
+@if (isDeleteing) {
+    <app-delete-user-popup (Cancel)="deleteCanceled()"></app-delete-user-popup>
+}
+
