@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { CardDataModel } from '../userprofile.model.ts/carddata.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +11,11 @@ export class CarddataService {
   httpService = inject(HttpClient);
 
   getCardsOfUser(id: number) {
-    return this.httpService.get(`${this.apiUrl}/User/${id}/card`);
+    return this.httpService.get<CardDataModel[]>(`${this.apiUrl}/User/${id}/card`);
   }
 
   requestNewCard(id: number) {
-    return this.httpService.post(`${this.apiUrl}/User/${id}/card`, {});
+    return this.httpService.post<CardDataModel>(`${this.apiUrl}/User/${id}/card`, {});
   }
 
   deleteCard(id: number, cardId: number) {
