@@ -8,6 +8,7 @@ import { Trainings } from './trainings/trainings/trainings';
 import { authGuard } from './guards/auth-guard';
 import { TrainingDetails } from './trainingdetails/training-details/training-details';
 import { ProfilePage } from './profilepage/profile-page/profile-page';
+import { TicketsPage } from './ticketspage/tickets-page/tickets-page';
 
 export const routes: Routes = [
     {
@@ -20,6 +21,7 @@ export const routes: Routes = [
             {path: 'trainings', component: Trainings, canActivate: [authGuard]},
             {path: 'trainings/:id', component: TrainingDetails, canActivate: [authGuard]},
             {path: 'profile', component: ProfilePage, canActivate: [authGuard]},
+            {path: 'tickets', component: TicketsPage, canActivate: [authGuard]},
         ]
     },
     {
