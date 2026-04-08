@@ -8,6 +8,6 @@ export interface TicketData {
     price:       number;
     maxUsage:    number;
     trainingId:  number;
-    trainerName: string;
+    trainingName: string;
 }
 

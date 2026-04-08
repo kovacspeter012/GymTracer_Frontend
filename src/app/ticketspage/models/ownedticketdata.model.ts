@@ -7,6 +7,6 @@ export interface OwnedTicketData {
     expirationDate: Date;
     usagesLeft:     number;
     trainingId:     null;
-    trainerName:    null;
+    trainingName:    null;
 }
 
