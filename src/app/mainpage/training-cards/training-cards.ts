@@ -30,9 +30,8 @@ export class TrainingCards implements OnInit {
 
     getTrainings() {
       let allTrainings: TrainingModel[] = [];
-      let startDate = "2023-05-01T10:00:00Z";
-      let today = new Date(startDate);
-      let nextWeek = new Date(startDate);
+      let today = new Date();
+      let nextWeek = new Date();
       nextWeek.setDate(today.getDate() + 7);
       console.log(today.toISOString(), nextWeek.toISOString());
       
