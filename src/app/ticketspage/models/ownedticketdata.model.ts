@@ -5,6 +5,7 @@ export interface OwnedTicketData {
     description:    string;
     isStudent:      boolean;
     expirationDate: Date;
+    price:          number;
     paymentId:       number;
     isPayed:         boolean;
     usagesLeft:     number | null;

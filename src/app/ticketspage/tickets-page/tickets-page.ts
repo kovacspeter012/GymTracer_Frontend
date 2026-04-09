@@ -10,10 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { OwnedTicketCard } from '../owned-ticket-card/owned-ticket-card';
 import { OwnedTicketData } from '../models/ownedticketdata.model';
 import { TicketModal } from '../ticket-modal/ticket-modal';
+import { PaymentModal } from '../payment-modal/payment-modal';
 
 @Component({
   selector: 'app-tickets-page',
-  imports: [TicketsCard, FormsModule, OwnedTicketCard, TicketModal],
+  imports: [TicketsCard, FormsModule, OwnedTicketCard, TicketModal, PaymentModal],
   templateUrl: './tickets-page.html',
   styleUrl: './tickets-page.css',
 })
@@ -23,8 +24,12 @@ export class TicketsPage implements OnInit {
   ticketsService = inject(TicketsService);
   router = inject(Router);
 
-  isModalOpen: boolean = false;
+  isTicketModalOpen: boolean = false;
   selectedTicketToBuy: TicketData | null = null;
+  selectedOwnedTicketToPay: OwnedTicketData | null = null;
+
+  isPaymentModalOpen: boolean = false;
+  isPaidForTicket: boolean = false;
 
   ownedTickets: OwnedTicketData[] = [];
   standardTickets: TicketData[] = [];
@@ -35,17 +40,85 @@ export class TicketsPage implements OnInit {
 
   ngOnInit(): void {
     this.getTickets();
+    this.getOwnedTickets();
   }
 
   refreshTickets() {
     this.getTickets();
     console.log();
-    
   }
 
   openTicketModal(ticket: TicketData) {
-    this.isModalOpen = true;
+    this.isPaidForTicket = false;
+    this.isTicketModalOpen = true;
+    this.selectedOwnedTicketToPay = null;
     this.selectedTicketToBuy = ticket;
+  }
+
+  closeTicketModal() {
+    this.isTicketModalOpen = false;
+  }
+
+  processPayment(isPaid: boolean) {
+    this.isPaidForTicket = isPaid;
+    if (!isPaid) {
+      this.makeNewTicket();
+    }
+    else{
+      this.isPaymentModalOpen = true;
+    }
+    this.closeTicketModal();
+  }
+
+  payOwnedTicket(ticket: OwnedTicketData){
+    this.selectedTicketToBuy = null;
+    this.selectedOwnedTicketToPay = ticket;
+    this.isPaymentModalOpen = true;
+  }
+
+  closePaymentModal() {
+    this.isPaymentModalOpen = false;
+    this.selectedOwnedTicketToPay = null;
+  }
+
+  makePayment(isSuccess: boolean) {
+    if (isSuccess) {
+      if(this.selectedTicketToBuy){
+        this.makeNewTicket();
+      } else if(this.selectedOwnedTicketToPay){
+        this.payForOwnedTicket();
+      }
+    } else {
+      this.closePaymentModal();
+    }
+  }
+
+  makeNewTicket(){
+    console.log(this.selectedTicketToBuy);
+    
+    this.ticketsService.buyTicket(this.authService.actingUser!.id, this.selectedTicketToBuy!.id, this.isPaidForTicket).subscribe({
+      next: (res) => {
+        this.closeTicketModal();
+        this.closePaymentModal();
+        this.getOwnedTickets();
+      },
+      error: (error) => {
+        console.log(error.message);
+      }
+    });
+  }
+
+  payForOwnedTicket(){
+    this.ticketsService.payForOwnedTicket(this.authService.actingUser!.id, this.selectedOwnedTicketToPay!.paymentId).subscribe({
+      next: (res) => {
+        this.closeTicketModal();
+        this.closePaymentModal();
+        this.getOwnedTickets();
+      },
+      error: (error) => {
+        console.log(error.message);
+      }
+    });
   }
 
   getTickets(){

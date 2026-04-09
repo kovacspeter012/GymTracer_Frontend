@@ -16,6 +16,14 @@ export class TicketsService {
   }
 
   getOwnedTicketsOfUser(id: number) {
-    return this.httpService.get<OwnedTicketData[]>(`${this.apiUrl}/User/${id}/ticket`);
+    return this.httpService.get<OwnedTicketData[]>(`${this.apiUrl}/Ticket/user/${id}`);
+  }
+
+  buyTicket(id:number, ticketId: number, isPaid: boolean) {
+    return this.httpService.post(`${this.apiUrl}/Ticket/${ticketId}/user/${id}/${isPaid}`, {});
+  }
+
+  payForOwnedTicket(id: number, paymentId: number) {
+    return this.httpService.patch(`${this.apiUrl}/Ticket/user/${id}/pay/${paymentId}`, {});
   }
 }

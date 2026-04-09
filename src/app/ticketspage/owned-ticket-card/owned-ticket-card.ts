@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OwnedTicketData } from '../models/ownedticketdata.model';
 
 @Component({
@@ -10,5 +10,11 @@ import { OwnedTicketData } from '../models/ownedticketdata.model';
 export class OwnedTicketCard {
   @Input() ticket: OwnedTicketData | null = null;
 
-  
+  @Output() payForTicket = new EventEmitter<OwnedTicketData>();
+
+  pay() {
+    if (this.ticket) {
+      this.payForTicket.emit(this.ticket);
+    }
+  }
 }
