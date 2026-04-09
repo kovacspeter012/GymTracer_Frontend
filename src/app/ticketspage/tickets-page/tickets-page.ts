@@ -7,10 +7,13 @@ import { TicketData } from '../models/ticketdata.model';
 import { TicketType } from '../models/tickettype.model';
 import { TicketsCard } from '../tickets-card/tickets-card';
 import { FormsModule } from '@angular/forms';
+import { OwnedTicketCard } from '../owned-ticket-card/owned-ticket-card';
+import { OwnedTicketData } from '../models/ownedticketdata.model';
+import { TicketModal } from '../ticket-modal/ticket-modal';
 
 @Component({
   selector: 'app-tickets-page',
-  imports: [TicketsCard, FormsModule],
+  imports: [TicketsCard, FormsModule, OwnedTicketCard, TicketModal],
   templateUrl: './tickets-page.html',
   styleUrl: './tickets-page.css',
 })
@@ -20,6 +23,10 @@ export class TicketsPage implements OnInit {
   ticketsService = inject(TicketsService);
   router = inject(Router);
 
+  isModalOpen: boolean = false;
+  selectedTicketToBuy: TicketData | null = null;
+
+  ownedTickets: OwnedTicketData[] = [];
   standardTickets: TicketData[] = [];
   trainingTickets: TicketData[] = [];
 
@@ -32,6 +39,13 @@ export class TicketsPage implements OnInit {
 
   refreshTickets() {
     this.getTickets();
+    console.log();
+    
+  }
+
+  openTicketModal(ticket: TicketData) {
+    this.isModalOpen = true;
+    this.selectedTicketToBuy = ticket;
   }
 
   getTickets(){
@@ -39,6 +53,17 @@ export class TicketsPage implements OnInit {
       next: (res) => {
         this.standardTickets = res.filter(t => t.type !== TicketType.training && t.isStudent === this.showStandardStudentTickets);
         this.trainingTickets = res.filter(t => t.type === TicketType.training && t.isStudent === this.showTrainingStudentTickets);
+      },
+      error: (error) => {
+        console.log(error.url);
+      }
+    });
+  }
+
+  getOwnedTickets(){
+    this.ticketsService.getOwnedTicketsOfUser(this.authService.actingUser!.id).subscribe({
+      next: (res) => {
+        this.ownedTickets = res;
       },
       error: (error) => {
         console.log(error.url);

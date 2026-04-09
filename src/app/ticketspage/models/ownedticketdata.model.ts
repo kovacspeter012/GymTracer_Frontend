@@ -5,8 +5,10 @@ export interface OwnedTicketData {
     description:    string;
     isStudent:      boolean;
     expirationDate: Date;
-    usagesLeft:     number;
-    trainingId:     null;
-    trainingName:    null;
+    paymentId:       number;
+    isPayed:         boolean;
+    usagesLeft:     number | null;
+    trainingId:     number | null;
+    trainingName:    string | null;
 }
 

@@ -7,7 +7,7 @@ export interface TicketData {
     isStudent:   boolean;
     price:       number;
     maxUsage:    number;
-    trainingId:  number;
-    trainingName: string;
+    trainingId:  number | null;
+    trainingName: string | null;
 }
 

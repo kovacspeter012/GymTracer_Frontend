@@ -42,8 +42,7 @@
                     Regisztráció
                     </a>
                 } @else {
-                    <!-- //TODO: "Jegy vásárlása" gomb átirányít a jegyek vásárlása oldalra -->
-                    <a
+                    <a [routerLink]="['/tickets']"
                         class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:cursor-pointer">
                         Jegy vásárlása
                     </a>
