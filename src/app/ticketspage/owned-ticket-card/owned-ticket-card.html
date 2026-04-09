@@ -1,0 +1,22 @@
+<div
+    class="relative bg-linear-to-br from-gray-800 to-gray-900 border border-primary-500/30 p-6 rounded-2xl shadow-lg overflow-hidden">
+    <div class="absolute top-0 right-0 w-2 h-full bg-primary-500"></div>
+
+    <h3 class="text-lg font-bold text-white mb-1">Monthly Unlimited Pass</h3>
+    <p class="text-sm text-gray-400 mb-4">Valid until: May 1, 2026</p>
+
+
+    <div class="flex items-center justify-between mt-auto">
+        <div
+            class="inline-block bg-primary-500/10 text-primary-400 font-mono text-sm px-3 py-1 rounded-lg border border-primary-500/20 mt-8">
+            Remaining: Unlimited
+        </div>
+        @if (!ticket!.isPayed) {
+            <a (click)="pay()"
+                class="bg-primary-500 text-white hover:bg-primary-600 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-800 mt-5 hover:cursor-pointer">
+                Fizetés
+            </a>
+        }
+        
+    </div>
+</div>
