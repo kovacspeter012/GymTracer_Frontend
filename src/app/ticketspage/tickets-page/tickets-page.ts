@@ -45,7 +45,6 @@ export class TicketsPage implements OnInit {
 
   refreshTickets() {
     this.getTickets();
-    console.log();
   }
 
   openTicketModal(ticket: TicketData) {
@@ -94,7 +93,6 @@ export class TicketsPage implements OnInit {
   }
 
   makeNewTicket(){
-    console.log(this.selectedTicketToBuy);
     
     this.ticketsService.buyTicket(this.authService.actingUser!.id, this.selectedTicketToBuy!.id, this.isPaidForTicket).subscribe({
       next: (res) => {
