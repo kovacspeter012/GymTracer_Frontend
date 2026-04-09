@@ -12,29 +12,30 @@ import { Router } from '@angular/router';
 export class DeleteUserPopup {
   userdataService = inject(UserdataService);
   authService = inject(AuthService);
-  router = inject(Router);  
+  router = inject(Router);
 
   @Output() Cancel = new EventEmitter<void>();
 
-  CancelClick(){
+  CancelClick() {
     this.Cancel.emit();
   }
 
   //Todo: fininsh the routing
-  DeleteClick($event: boolean) {
-    // if ($event) {
-    //   this.userdataService.deleteUser(this.authService.actingUser!.id).subscribe({
-    //     next: (res) => {
-    //       alert("Sikeres törlés! Viszlát!");
-    //     },
-    //     error: (error) => {
-    //       alert("Hiba történt a törlés során! Kérem, próbálja újra később.");
-    //       console.log(error.message);
-    //     }
-    //   });
-    //   if (this.authService.pretendedUser )
-    //   this.authService.HandleLogout();
-    //   this.router.navigate(['/login']);
-    // }
+  DeleteClick() {
+    this.userdataService.deleteUser(this.authService.actingUser!.id).subscribe({
+      next: (res) => {
+        alert("Sikeres törlés! Viszlát!");
+      },
+      error: (error) => {
+        alert("Hiba történt a törlés során! Kérem, próbálja újra később.");
+        console.log(error.message);
+      }
+    });
+    if (this.authService.pretendedUser){
+      this.authService.HandleLogout();
+      this.router.navigate(['']);
+    }
+    this.router.navigate(['/login']);
+    this.authService.HandleLogout();
   }
 }
