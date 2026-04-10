@@ -244,6 +244,19 @@ export class MyTrainingsPage implements OnInit {
     return 22;
   }
 
+  getTimelineHours(){
+    const hours: number[] = [];
+    for (let i = this.getTimelineStartHour(); i <= this.getTimelineEndHour(); i += 2) {
+      hours.push(i);
+    }
+    return hours;
+  }
+
+  getHourPosition(h: number){
+    const totalHours = this.getTimelineEndHour() - this.getTimelineStartHour();
+    return ((h - this.getTimelineStartHour()) / totalHours) * 100;
+  }
+
   getBarLeft(startTime: string){
     const totalMinutes = (this.getTimelineEndHour() - this.getTimelineStartHour()) * 60;
     const d = new Date(startTime);
@@ -292,6 +305,22 @@ export class MyTrainingsPage implements OnInit {
       const e = new Date(t.endTime).getTime();
       return newStart < e && newEnd > s;
     });
+  }
+
+  isTodaySelected(){
+    if (!this.form.startTime) return false;
+    const selectedDate = new Date(this.form.startTime);
+    const today = new Date();
+    return selectedDate.getFullYear() === today.getFullYear() &&
+           selectedDate.getMonth() === today.getMonth() &&
+           selectedDate.getDate() === today.getDate();
+  }
+
+  getNowPosition(){
+    const now = new Date();
+    const totalMinutes = (this.getTimelineEndHour() - this.getTimelineStartHour()) * 60;
+    const minutes = (now.getHours() - this.getTimelineStartHour()) * 60 + now.getMinutes();
+    return Math.max(0, Math.min(100, (minutes / totalMinutes) * 100));
   }
 
   getTicketTypeLabel(type: number){

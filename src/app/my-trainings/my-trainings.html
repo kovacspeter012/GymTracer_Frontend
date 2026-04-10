@@ -176,13 +176,15 @@
           <div class="mt-2">
             <h3 class="text-sm font-bold text-gray-700 mb-2">Edzések idősávja ({{ form.startTime ? (form.startTime | slice:0:10) : 'mai nap' }})</h3>
             <div class="relative bg-gray-100 rounded-lg h-12 overflow-hidden border border-gray-200">
-              @for (h of [6,8,10,12,14,16,18,20,22]; track h) {
+              @for (h of getTimelineHours(); track h) {
                 <div class="absolute top-0 bottom-0 w-px bg-gray-300/70"
-                  [style.left.%]="((h - 6) / 16) * 100">
+                  [style.left.%]="getHourPosition(h)">
                 </div>
                 <span class="absolute top-0.5 text-[10px] text-gray-400"
-                  [style.left.%]="((h - 6) / 16) * 100"
-                  style="transform: translateX(-50%)">{{ h }}:00</span>
+                  [style.left.%]="getHourPosition(h)"
+                  style="transform: translateX(-50%)">
+                  {{ h === 24 ? '24' : h }}:00
+                </span>
               }
               @for (t of timelineTrainings; track t.id) {
                 <div class="absolute top-5 bottom-1 rounded bg-gray-400/70 hover:bg-gray-500/70 transition-colors"
@@ -198,7 +200,13 @@
                   [class.opacity-80]="true"
                   [style.left.%]="getNewBarLeft()"
                   [style.width.%]="getNewBarWidth()"
-                  [title]="'Új edzés'">
+                  [title]="form.name || 'Új edzés'">
+                </div>
+              }
+              @if (isTodaySelected()) {
+                <div class="absolute top-0 bottom-0 w-0.5 bg-red-500 z-20"
+                  [style.left.%]="getNowPosition()"
+                  title="Jelenlegi idő">
                 </div>
               }
             </div>
