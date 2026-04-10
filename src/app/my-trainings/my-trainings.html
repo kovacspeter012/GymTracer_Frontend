@@ -221,21 +221,61 @@
           @if (form.tickets.length > 0) {
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               @for (ticket of form.tickets; track $index) {
-                <div class="border border-gray-200 rounded-lg p-4 flex flex-col hover:border-primary-400 transition-colors bg-gray-50">
-                  <div class="flex justify-between items-start mb-2">
-                    <span class="bg-primary-500/15 text-primary-600 px-2 text-xs py-1 rounded font-bold">
-                      {{ ticket.price | number:'1.0-0' }} Ft
-                    </span>
-                    <button (click)="removeTicket($index)" class="text-red-400 hover:text-red-600 cursor-pointer ml-2">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                      </svg>
-                    </button>
-                  </div>
-                  <p class="text-sm text-gray-600 mb-3 flex-1">{{ ticket.description }}</p>
-                  <div class="text-xs text-gray-500">
-                    <span>Diák: {{ ticket.isStudent ? 'Igen' : 'Nem' }}</span>
-                  </div>
+                <div class="border border-gray-200 rounded-lg p-4 flex flex-col hover:border-primary-400 transition-colors"
+                     [ngClass]="editingTicketIndex === $index ? 'bg-white shadow-sm' : 'bg-gray-50'">
+                  
+                  @if (editingTicketIndex === $index) {
+                    <div class="flex justify-between items-center mb-3">
+                      <span class="text-xs font-bold text-primary-600">{{ $index + 1 }}. jegy szerkesztése</span>
+                      
+                      <button (click)="saveTicketEdit()" 
+                              [disabled]="!ticket.description || ticket.price === null || ticket.price < 0"
+                              class="text-green-500 hover:text-green-700 cursor-pointer bg-green-50 p-1 rounded disabled:opacity-40 disabled:cursor-not-allowed">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Leírás</label>
+                    <input type="text" [(ngModel)]="ticket.description" [name]="'tDesc_' + $index" placeholder="Leírás"
+                      class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-primary-400 mb-2">
+                    
+                    <div class="flex items-end gap-2">
+                      <div class="flex-1 relative">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Ár (Ft)</label>
+                        <input type="number" [(ngModel)]="ticket.price" [name]="'tPrice_' + $index" min="0"
+                          class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-primary-400">
+                      </div>
+                      <label class="flex justify-center items-center gap-1 text-xs text-gray-600 cursor-pointer whitespace-nowrap px-2 h-[34px]">
+                        <input type="checkbox" [(ngModel)]="ticket.isStudent" [name]="'tStudent_' + $index">
+                        Diák
+                      </label>
+                    </div>
+                  } @else {
+                    <div class="flex justify-between items-start mb-2">
+                      <span class="bg-primary-500/15 text-primary-600 px-2 text-xs py-1 rounded font-bold">
+                        {{ ticket.price | number:'1.0-0' }} Ft
+                      </span>
+                      <div class="flex gap-2 ml-2">
+                        <button (click)="editTicket($index)" class="text-blue-400 hover:text-blue-600 cursor-pointer">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                          </svg>
+                        </button>
+                        <button (click)="removeTicket($index)" class="text-red-400 hover:text-red-600 cursor-pointer">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex-1">{{ ticket.description }}</p>
+                    <div class="text-xs text-gray-500">
+                      <span>Diák: {{ ticket.isStudent ? 'Igen' : 'Nem' }}</span>
+                    </div>
+                  }
+                  
                   @for (err of getTicketErrors($index); track $index) {
                     <p class="text-red-600 text-xs font-semibold mt-1">{{ err }}</p>
                   }
@@ -244,9 +284,11 @@
             </div>
           }
 
-          @if (hasAnyTicketErrors() && form.tickets.length > 0) {
-            <div class="bg-red-50 border-l-4 border-red-400 p-3 rounded mb-3">
-              <p class="text-red-600 text-xs">Egy vagy több jegy hibás adatot tartalmaz.</p>
+          @if (hasAnyTicketErrors() || ticketError) {
+            <div class="bg-red-50 border-l-4 border-red-400 p-3 rounded mb-3 shadow-sm transition-all">
+              <p class="text-red-600 text-xs font-semibold">
+                {{ ticketError || 'Egy vagy több jegy hibás adatot tartalmaz.' }}
+              </p>
             </div>
           }
 

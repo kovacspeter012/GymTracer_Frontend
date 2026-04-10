@@ -54,6 +54,28 @@ export class MyTrainingsPage implements OnInit {
 
   timelineTrainings: AllTrainingResponse[] = [];
 
+  editingTicketIndex: number | null = null;
+  ticketError: string | null = null;
+
+  editTicket(index: number) {
+    if (this.editingTicketIndex !== null && this.editingTicketIndex !== index) {
+      const currentTicket = this.form.tickets[this.editingTicketIndex];
+      
+      if (!currentTicket.description || currentTicket.description.trim() === '' || currentTicket.price === null || currentTicket.price === undefined || currentTicket.price < 0) {
+        this.ticketError = 'Kérjük, előbb töltsd ki helyesen a jelenleg szerkesztett jegyet!';
+        return;
+      }
+    }
+
+    this.editingTicketIndex = index;
+    this.ticketError = null;
+  }
+
+  saveTicketEdit() {
+    this.editingTicketIndex = null;
+    this.ticketError = null;
+  }
+
   ngOnInit() {
     this.load();
   }
@@ -80,6 +102,8 @@ export class MyTrainingsPage implements OnInit {
 
   openCreate() {
     this.editingId = null;
+    this.editingTicketIndex = null;
+
     this.form = {
       name: '',
       description: '',
@@ -98,6 +122,8 @@ export class MyTrainingsPage implements OnInit {
 
   openEdit(t: TrainerTrainingModel) {
     this.editingId = t.id;
+    this.editingTicketIndex = null;
+    
     this.form = {
       name: t.name,
       description: t.description,
@@ -156,6 +182,8 @@ export class MyTrainingsPage implements OnInit {
     this.showModal = false;
     this.modalError = null;
     this.fieldErrors = {};
+
+    this.editingTicketIndex = null;
   }
 
   save() {
@@ -176,8 +204,17 @@ export class MyTrainingsPage implements OnInit {
       return;
     }
 
+    const hasInvalidTickets = this.form.tickets.some(t => 
+      !t.description || t.description.trim() === '' || t.price === null || t.price === undefined || t.price < 0
+    );
+    if (hasInvalidTickets) {
+      this.ticketError = 'Minden jegyhez kötelező megadni a leírást, és az ár nem lehet negatív vagy üres!';
+      return;
+    }
+
     this.isSaving = true;
     this.modalError = null;
+    this.ticketError = null;
     this.fieldErrors = {};
 
     const dto: CreateTrainingDto = {
