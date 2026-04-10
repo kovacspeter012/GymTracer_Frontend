@@ -144,7 +144,7 @@ export class MyTrainingsPage implements OnInit {
 
   addTicket() {
     if (!this.newTicket.description || this.newTicket.price < 0) return;
-    this.form.tickets.push({ ...this.newTicket });
+    this.form.tickets.push({ ...this.newTicket, price : this.newTicket.price || 0 });
     this.newTicket = { description: '', isStudent: false, price: 0, type: 0 };
   }
 
@@ -182,6 +182,7 @@ export class MyTrainingsPage implements OnInit {
 
     const dto: CreateTrainingDto = {
       ...this.form,
+      maxParticipant: this.form.maxParticipant || 0,
       startTime: startDate.toISOString(), 
       endTime: endDate.toISOString(),
     };
