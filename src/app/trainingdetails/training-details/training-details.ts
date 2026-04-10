@@ -101,7 +101,11 @@ export class TrainingDetails {
 
     this.trainingDetailService.getTrainingById(id).subscribe({
       next: (res) => {
-        this.training = res;
+        this.training = {
+          ...res,
+          startTime: this.ensureUtc(res.startTime),
+          endTime: this.ensureUtc(res.endTime)
+        };
         this.isLoading = false;
       },
       error: (err) => {
@@ -158,4 +162,10 @@ export class TrainingDetails {
     });
   }
 
+  private ensureUtc(dateString: string){
+    if (!dateString) return dateString;
+
+    const isoString = dateString.replace(' ', 'T');
+    return isoString.endsWith('Z') ? isoString : isoString + 'Z';
+  }
 }

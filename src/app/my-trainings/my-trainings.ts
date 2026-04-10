@@ -329,7 +329,7 @@ export class MyTrainingsPage implements OnInit {
     return localISOTime;
   }
 
-  private ensureUtc(dateString: string): string {
+  private ensureUtc(dateString: string){
     if (!dateString) return dateString;
 
     const isoString = dateString.replace(' ', 'T');
