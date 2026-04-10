@@ -190,6 +190,10 @@ export class MyTrainingsPage implements OnInit {
   }
 
   removeTicket(index: number) {
+    if (!confirm('Biztosan törölni szeretnéd ezt a jegyet?')) {
+      return;
+    }
+    
     this.form.tickets.splice(index, 1);
   }
 
