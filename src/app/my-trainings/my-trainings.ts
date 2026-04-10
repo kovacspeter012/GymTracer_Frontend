@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { NgClass, DatePipe, DecimalPipe } from '@angular/common';
+import { NgClass, DatePipe, SlicePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { ThemeService } from '../services/theme.service';
@@ -11,7 +11,7 @@ import { formatErrors } from '../utils/error-helper';
 
 @Component({
   selector: 'app-my-trainings',
-  imports: [NgClass, DatePipe, FormsModule, DecimalPipe],
+  imports: [NgClass, DatePipe, FormsModule, DecimalPipe, SlicePipe],
   templateUrl: './my-trainings.html',
   styleUrl: './my-trainings.css',
   host: { class: 'flex-1 flex flex-col w-full' }
@@ -220,6 +220,29 @@ export class MyTrainingsPage implements OnInit {
     return this.deletingIds.has(id);
   }
 
+  getTimelineStartHour(){
+    return 6;
+  }
+
+  getTimelineEndHour(){
+    return 22;
+  }
+
+  getBarLeft(startTime: string){
+    const totalMinutes = (this.getTimelineEndHour() - this.getTimelineStartHour()) * 60;
+    const d = new Date(startTime);
+    const minutes = (d.getHours() - this.getTimelineStartHour()) * 60 + d.getMinutes();
+    return Math.max(0, Math.min(100, (minutes / totalMinutes) * 100));
+  }
+
+  getBarWidth(startTime: string, endTime: string){
+    const totalMinutes = (this.getTimelineEndHour() - this.getTimelineStartHour()) * 60;
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const duration = (end.getTime() - start.getTime()) / 60000;
+    return Math.max(0.5, Math.min(100, (duration / totalMinutes) * 100));
+  }
+
   getDurationError(){
     if (!this.form.startTime || !this.form.endTime) return null;
     const start = new Date(this.form.startTime).getTime();
@@ -229,6 +252,19 @@ export class MyTrainingsPage implements OnInit {
     if (durationMs < 5 * 60 * 1000) return 'Az edzés legalább 5 perc hosszú kell legyen!';
     if (durationMs > 5 * 60 * 60 * 1000) return 'Az edzés legfeljebb 5 óra hosszú lehet!';
     return null;
+  }
+
+  getNewBarLeft(){
+    if (!this.form.startTime) return 0;
+    return this.getBarLeft(this.form.startTime);
+  }
+
+  getNewBarWidth(){
+    if (!this.form.startTime || !this.form.endTime) return 0;
+    const start = new Date(this.form.startTime).getTime();
+    const end = new Date(this.form.endTime).getTime();
+    if (isNaN(start) || isNaN(end) || end <= start) return 0;
+    return this.getBarWidth(this.form.startTime, this.form.endTime);
   }
 
   hasOverlap(){
