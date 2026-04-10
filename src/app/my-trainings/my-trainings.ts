@@ -105,7 +105,9 @@ export class MyTrainingsPage implements OnInit {
       startTime: this.toLocalDatetimeString(t.startTime),
       endTime: this.toLocalDatetimeString(t.endTime),
       maxParticipant: t.maxParticipant,
-      tickets: []
+      tickets: t.tickets && t.tickets.length > 0
+        ? t.tickets.map(ticket => ({ ...ticket }))
+        : []
     };
     this.newTicket = { description: '', isStudent: false, price: 0, type: 0 };
     this.modalError = null;

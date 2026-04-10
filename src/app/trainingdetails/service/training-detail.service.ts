@@ -23,6 +23,6 @@ export class TrainingDetailService {
   }
 
   markPresence(trainingId: number, userId: number, presence: boolean){
-    return this.http.patch(`${environment.apiUrl}/Training/${trainingId}/user/${userId}/presence`, { presence });
+    return this.http.patch(`${environment.apiUrl}/Training/${trainingId}/user/${userId}/presence/${presence}`, {});
   }
 }
