@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { NgClass, DatePipe } from '@angular/common';
+import { NgClass, DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { ThemeService } from '../services/theme.service';
@@ -11,7 +11,7 @@ import { formatErrors } from '../utils/error-helper';
 
 @Component({
   selector: 'app-my-trainings',
-  imports: [NgClass, DatePipe, FormsModule],
+  imports: [NgClass, DatePipe, FormsModule, DecimalPipe],
   templateUrl: './my-trainings.html',
   styleUrl: './my-trainings.css',
   host: { class: 'flex-1 flex flex-col w-full' }
@@ -74,12 +74,128 @@ export class MyTrainingsPage implements OnInit {
     });
   }
 
+  openCreate() {
+    this.editingId = null;
+    this.form = {
+      name: '',
+      description: '',
+      image: '',
+      startTime: '',
+      endTime: '',
+      maxParticipant: 10,
+      tickets: []
+    };
+    this.newTicket = { description: '', isStudent: false, price: 0, type: 0 };
+    this.modalError = null;
+    this.fieldErrors = {};
+    this.showModal = true;
+    this.loadAllTrainings();
+  }
+
+  openEdit(t: TrainerTrainingModel) {
+    this.editingId = t.id;
+    this.form = {
+      name: t.name,
+      description: t.description,
+      image: t.image,
+      startTime: t.startTime.substring(0, 16),
+      endTime: t.endTime.substring(0, 16),
+      maxParticipant: t.maxParticipant,
+      tickets: []
+    };
+    this.newTicket = { description: '', isStudent: false, price: 0, type: 0 };
+    this.modalError = null;
+    this.fieldErrors = {};
+    this.showModal = true;
+    this.loadAllTrainings();
+  }
+
   loadAllTrainings() {
     this.trainerService.getAllTrainings().subscribe({
       next: (res) => {
         this.allTrainings = res;
+        this.updateTimeline();
       },
       error: () => {}
+    });
+  }
+
+  updateTimeline() {
+    if (!this.form.startTime) {
+      this.timelineTrainings = this.allTrainings;
+      return;
+    }
+    const date = this.form.startTime.substring(0, 10);
+    this.timelineTrainings = this.allTrainings.filter(t =>
+      t.startTime.substring(0, 10) === date &&
+      (this.editingId === null || t.id !== this.editingId)
+    );
+  }
+
+  addTicket() {
+    if (!this.newTicket.description || this.newTicket.price < 0) return;
+    this.form.tickets.push({ ...this.newTicket });
+    this.newTicket = { description: '', isStudent: false, price: 0, type: 0 };
+  }
+
+  removeTicket(index: number) {
+    this.form.tickets.splice(index, 1);
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.modalError = null;
+    this.fieldErrors = {};
+  }
+
+  save() {
+    const userId = this.auth.actingUser?.id;
+    if (!userId) return;
+
+    const startDate = new Date(this.form.startTime);
+    const endDate = new Date(this.form.endTime);
+
+    if (!this.form.startTime || !this.form.endTime || isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      this.modalError = 'Kérjük, add meg az érvényes kezdési és befejezési időpontot!';
+      return;
+    }
+
+    const durationError = this.getDurationError();
+    if (durationError) {
+      this.modalError = durationError;
+      return;
+    }
+
+    this.isSaving = true;
+    this.modalError = null;
+    this.fieldErrors = {};
+
+    const dto: CreateTrainingDto = {
+      ...this.form,
+      startTime: this.form.startTime.length === 16 ? `${this.form.startTime}:00` : this.form.startTime,
+      endTime: this.form.endTime.length === 16 ? `${this.form.endTime}:00` : this.form.endTime,
+    };
+
+    const obs = this.editingId
+      ? this.trainerService.updateTraining(this.editingId, dto)
+      : this.trainerService.createTraining(userId, dto);
+
+    obs.subscribe({
+      next: () => {
+        this.isSaving = false;
+        this.showModal = false;
+        this.successMessage = this.editingId ? 'Edzés sikeresen módosítva!' : 'Edzés sikeresen létrehozva!';
+        setTimeout(() => this.successMessage = null, 4000);
+        this.load();
+      },
+      error: (err) => {
+        this.isSaving = false;
+        if (err.error?.errors && typeof err.error.errors === 'object') {
+          this.fieldErrors = err.error.errors;
+        } else {
+          this.modalError = err.error?.error || err.error || 'Edzés mentése sikertelen.';
+        }
+      }
     });
   }
 
@@ -104,4 +220,54 @@ export class MyTrainingsPage implements OnInit {
     return this.deletingIds.has(id);
   }
 
+  getDurationError(){
+    if (!this.form.startTime || !this.form.endTime) return null;
+    const start = new Date(this.form.startTime).getTime();
+    const end = new Date(this.form.endTime).getTime();
+    if (isNaN(start) || isNaN(end)) return null;
+    const durationMs = end - start;
+    if (durationMs < 5 * 60 * 1000) return 'Az edzés legalább 5 perc hosszú kell legyen!';
+    if (durationMs > 5 * 60 * 60 * 1000) return 'Az edzés legfeljebb 5 óra hosszú lehet!';
+    return null;
+  }
+
+  hasOverlap(){
+    if (!this.form.startTime || !this.form.endTime) return false;
+    const newStart = new Date(this.form.startTime).getTime();
+    const newEnd = new Date(this.form.endTime).getTime();
+    return this.timelineTrainings.some(t => {
+      const s = new Date(t.startTime).getTime();
+      const e = new Date(t.endTime).getTime();
+      return newStart < e && newEnd > s;
+    });
+  }
+
+  getTicketTypeLabel(type: number){
+    switch (type) {
+      case 0: return 'Edzésjegy';
+      case 1: return 'Napi';
+      case 2: return 'Havi';
+      case 3: return 'Alkalomjegy';
+      default: return '?';
+    }
+  }
+
+  isUpcoming(t: TrainerTrainingModel){
+    return new Date(t.endTime).getTime() > Date.now();
+  }
+
+  viewTraining(id: number) {
+    this.router.navigate(['/trainings', id]);
+  }
+
+  getTicketErrors(index: number){
+    const prefix = `jegy.[${index}]`;
+    return Object.entries(this.fieldErrors)
+      .filter(([k]) => k.startsWith(prefix))
+      .map(([, v]) => v);
+  }
+
+  hasAnyTicketErrors(){
+    return Object.keys(this.fieldErrors).some(k => k.startsWith('jegy.'));
+  }
 }
