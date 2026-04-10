@@ -64,7 +64,11 @@ export class MyTrainingsPage implements OnInit {
     this.isLoading = true;
     this.trainerService.getTrainerTrainings(userId).subscribe({
       next: (res) => {
-        this.trainings = res;
+        this.trainings = res.map(t => ({
+          ...t,
+          startTime: this.ensureUtc(t.startTime),
+          endTime: this.ensureUtc(t.endTime)
+        }));
         this.isLoading = false;
       },
       error: (err) => {
@@ -98,8 +102,8 @@ export class MyTrainingsPage implements OnInit {
       name: t.name,
       description: t.description,
       image: t.image,
-      startTime: t.startTime.substring(0, 16),
-      endTime: t.endTime.substring(0, 16),
+      startTime: this.toLocalDatetimeString(t.startTime),
+      endTime: this.toLocalDatetimeString(t.endTime),
       maxParticipant: t.maxParticipant,
       tickets: []
     };
@@ -113,7 +117,11 @@ export class MyTrainingsPage implements OnInit {
   loadAllTrainings() {
     this.trainerService.getAllTrainings().subscribe({
       next: (res) => {
-        this.allTrainings = res;
+        this.allTrainings = res.map(t => ({
+          ...t,
+          startTime: this.ensureUtc(t.startTime),
+          endTime: this.ensureUtc(t.endTime)
+        }));
         this.updateTimeline();
       },
       error: () => {}
@@ -172,8 +180,8 @@ export class MyTrainingsPage implements OnInit {
 
     const dto: CreateTrainingDto = {
       ...this.form,
-      startTime: this.form.startTime.length === 16 ? `${this.form.startTime}:00` : this.form.startTime,
-      endTime: this.form.endTime.length === 16 ? `${this.form.endTime}:00` : this.form.endTime,
+      startTime: startDate.toISOString(), 
+      endTime: endDate.toISOString(),
     };
 
     const obs = this.editingId
@@ -192,6 +200,11 @@ export class MyTrainingsPage implements OnInit {
         this.isSaving = false;
         if (err.error?.errors && typeof err.error.errors === 'object') {
           this.fieldErrors = err.error.errors;
+
+          if (this.fieldErrors['StartTime'] && this.fieldErrors['StartTime'].includes('előtt')) {
+            this.fieldErrors['StartTime'] = 'A kezdési időpont nem lehet a múltban!';
+          }
+          
         } else {
           this.modalError = err.error?.error || err.error || 'Edzés mentése sikertelen.';
         }
@@ -305,5 +318,21 @@ export class MyTrainingsPage implements OnInit {
 
   hasAnyTicketErrors(){
     return Object.keys(this.fieldErrors).some(k => k.startsWith('jegy.'));
+  }
+
+  private toLocalDatetimeString(dateString: string){
+    const d = new Date(dateString);
+
+    const offset = d.getTimezoneOffset() * 60000; 
+    const localISOTime = new Date(d.getTime() - offset).toISOString().slice(0, 16);
+
+    return localISOTime;
+  }
+
+  private ensureUtc(dateString: string): string {
+    if (!dateString) return dateString;
+
+    const isoString = dateString.replace(' ', 'T');
+    return isoString.endsWith('Z') ? isoString : isoString + 'Z';
   }
 }

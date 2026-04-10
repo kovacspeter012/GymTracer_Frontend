@@ -46,11 +46,12 @@
       } @else {
         <div class="space-y-4">
           @for (t of trainings; track t.id) {
-            <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 flex items-center gap-4 hover:border-primary-400 transition-colors"
-                 [class.opacity-60]="!isUpcoming(t)">
+            <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 flex items-center gap-4 hover:border-primary-400 transition-colors">
+              
               <img [src]="t.image" [alt]="t.name" (error)="$any($event.target).src='images/training_default.jpg'"
-                class="w-20 h-20 object-cover rounded-lg shrink-0">
-              <div class="flex-1 min-w-0">
+                class="w-20 h-20 object-cover rounded-lg shrink-0"
+                [class.opacity-60]="!isUpcoming(t)">
+              <div class="flex-1 min-w-0" [class.opacity-60]="!isUpcoming(t)">
                 <div class="flex items-center gap-2 mb-1">
                   <h3 class="font-bold text-gray-800 text-lg truncate">{{ t.name }}</h3>
                   @if (!isUpcoming(t)) {
