@@ -57,6 +57,21 @@ export class MyTrainingsPage implements OnInit {
   editingTicketIndex: number | null = null;
   ticketError: string | null = null;
 
+  isBackdropMousedown = false;
+
+  onBackdropMouseDown(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.isBackdropMousedown = true;
+    }
+  }
+
+  onBackdropClick(event: MouseEvent) {
+    if (event.target === event.currentTarget && this.isBackdropMousedown) {
+      this.closeModal();
+    }
+    this.isBackdropMousedown = false;
+  }
+
   editTicket(index: number) {
     if (this.editingTicketIndex !== null && this.editingTicketIndex !== index) {
       const currentTicket = this.form.tickets[this.editingTicketIndex];

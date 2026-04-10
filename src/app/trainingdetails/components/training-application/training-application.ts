@@ -37,6 +37,21 @@ export class TrainingApplication {
     window.scrollTo(0, this.scrollPosition);
   };
 
+  isBackdropMousedown = false;
+
+  onBackdropMouseDown(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.isBackdropMousedown = true;
+    }
+  }
+
+  onBackdropClick(event: MouseEvent) {
+    if (event.target === event.currentTarget && this.isBackdropMousedown) {
+      this.closeModal();
+    }
+    this.isBackdropMousedown = false;
+  }
+
   ngOnInit() {
     this.scrollPosition = window.scrollY;
 
