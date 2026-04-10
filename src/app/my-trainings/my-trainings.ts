@@ -209,18 +209,74 @@ export class MyTrainingsPage implements OnInit {
     const userId = this.auth.actingUser?.id;
     if (!userId) return;
 
-    const startDate = new Date(this.form.startTime);
-    const endDate = new Date(this.form.endTime);
+    this.fieldErrors = {};
+    this.modalError = null;
+    this.ticketError = null;
+    let isValid = true;
 
-    if (!this.form.startTime || !this.form.endTime || isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      this.modalError = 'Kérjük, add meg az érvényes kezdési és befejezési időpontot!';
-      return;
+    if (!this.form.name || this.form.name.trim() === '') {
+      this.fieldErrors['Name'] = 'Az edzés nevének megadása kötelező!';
+      isValid = false;
+    }
+    if (!this.form.description || this.form.description.trim() === '') {
+      this.fieldErrors['Description'] = 'Az edzés leírásának megadása kötelező!';
+      isValid = false;
+    }
+    if (!this.form.image || this.form.image.trim() === '') {
+      this.fieldErrors['Image'] = 'A kép megadása kötelező!';
+      isValid = false;
     }
 
-    const durationError = this.getDurationError();
-    if (durationError) {
-      this.modalError = durationError;
-      return;
+    if (!this.form.maxParticipant || this.form.maxParticipant < 1 || this.form.maxParticipant > 100) {
+      this.fieldErrors['MaxParticipant'] = 'A résztvevők száma 1 és 100 között kell legyen!';
+      isValid = false;
+    }
+
+    if (!this.form.startTime) {
+      this.fieldErrors['StartTime'] = 'A kezdési idő megadása kötelező!';
+      isValid = false;
+    }
+    if (!this.form.endTime) {
+      this.fieldErrors['EndTime'] = 'A befejezési idő megadása kötelező!';
+      isValid = false;
+    }
+
+    let startDateIso = '';
+    let endDateIso = '';
+
+    if (this.form.startTime && this.form.endTime) {
+      const startDate = new Date(this.form.startTime);
+      const endDate = new Date(this.form.endTime);
+      const start = startDate.getTime();
+      const end = endDate.getTime();
+      const now = new Date().getTime();
+
+      if (isNaN(start) || isNaN(end)) {
+        this.fieldErrors['StartTime'] = 'Érvénytelen dátum!';
+        isValid = false;
+      } else {
+        startDateIso = startDate.toISOString();
+        endDateIso = endDate.toISOString();
+
+        if (!this.editingId && start < (now - 60000)) {
+          this.fieldErrors['StartTime'] = 'A kezdési idő nem lehet a múltban!';
+          isValid = false;
+        }
+
+        if (end <= start) {
+          this.fieldErrors['EndTime'] = 'A befejezésnek a kezdés után kell lennie!';
+          isValid = false;
+        } else {
+          const durationMs = end - start;
+          if (durationMs < 5 * 60 * 1000) {
+            this.fieldErrors['EndTime'] = 'Az edzésnek legalább 5 percesnek kell lennie!';
+            isValid = false;
+          } else if (durationMs > 2 * 60 * 60 * 1000) {
+            this.fieldErrors['EndTime'] = 'Az edzés legfeljebb 2 óra hosszú lehet!';
+            isValid = false;
+          }
+        }
+      }
     }
 
     const hasInvalidTickets = this.form.tickets.some(t => 
@@ -228,19 +284,20 @@ export class MyTrainingsPage implements OnInit {
     );
     if (hasInvalidTickets) {
       this.ticketError = 'Minden jegyhez kötelező megadni a leírást, és az ár nem lehet negatív vagy üres!';
+      isValid = false;
+    }
+
+    if (!isValid) {
       return;
     }
 
     this.isSaving = true;
-    this.modalError = null;
-    this.ticketError = null;
-    this.fieldErrors = {};
 
     const dto: CreateTrainingDto = {
       ...this.form,
       maxParticipant: this.form.maxParticipant || 0,
-      startTime: startDate.toISOString(), 
-      endTime: endDate.toISOString(),
+      startTime: startDateIso, 
+      endTime: endDateIso,
     };
 
     const obs = this.editingId
@@ -263,8 +320,8 @@ export class MyTrainingsPage implements OnInit {
           if (this.fieldErrors['StartTime'] && this.fieldErrors['StartTime'].includes('előtt')) {
             this.fieldErrors['StartTime'] = 'A kezdési időpont nem lehet a múltban!';
           }
-          
-        } else {
+        } 
+        else {
           this.modalError = err.error?.error || err.error || 'Edzés mentése sikertelen.';
         }
       }
@@ -326,17 +383,6 @@ export class MyTrainingsPage implements OnInit {
     const end = new Date(endTime);
     const duration = (end.getTime() - start.getTime()) / 60000;
     return Math.max(0.5, Math.min(100, (duration / totalMinutes) * 100));
-  }
-
-  getDurationError(){
-    if (!this.form.startTime || !this.form.endTime) return null;
-    const start = new Date(this.form.startTime).getTime();
-    const end = new Date(this.form.endTime).getTime();
-    if (isNaN(start) || isNaN(end)) return null;
-    const durationMs = end - start;
-    if (durationMs < 5 * 60 * 1000) return 'Az edzés legalább 5 perc hosszú kell legyen!';
-    if (durationMs > 5 * 60 * 60 * 1000) return 'Az edzés legfeljebb 5 óra hosszú lehet!';
-    return null;
   }
 
   getNewBarLeft(){
