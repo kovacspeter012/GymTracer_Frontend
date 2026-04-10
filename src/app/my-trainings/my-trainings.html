@@ -55,7 +55,7 @@
                 <div class="flex items-center gap-2 mb-1">
                   <h3 class="font-bold text-gray-800 text-lg truncate">{{ t.name }}</h3>
                   @if (!isUpcoming(t)) {
-                    <span class="px-2 py-0.5 text-xs bg-gray-100 text-gray-500 rounded font-medium shrink-0">Lezárult</span>
+                    <span class="px-2 py-0.5 text-xs bg-gray-100 text-gray-500 rounded font-medium shrink-0">Véget ért</span>
                   }
                 </div>
                 <p class="text-sm text-gray-500">{{ t.startTime | date:'short' }} – {{ t.endTime | date:'shortTime' }}</p>

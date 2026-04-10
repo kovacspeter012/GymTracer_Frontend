@@ -22,4 +22,10 @@ export class TrainingItem {
   preserveListState(){
     this.trainingService.preserveState = true;
   }
+  endedInPast(){
+    const now = new Date().getTime();
+    const distance = new Date(this.training?.endTime ?? 0).getTime() - now;
+
+    return distance <= 0;
+  }
 }
