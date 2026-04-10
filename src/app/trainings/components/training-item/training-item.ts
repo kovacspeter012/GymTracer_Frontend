@@ -28,4 +28,13 @@ export class TrainingItem {
 
     return distance <= 0;
   }
+  inProgress(){
+    if (!this.training?.startTime || !this.training?.endTime) return false;
+    
+    const now = new Date().getTime();
+    const start = new Date(this.training.startTime).getTime();
+    const end = new Date(this.training.endTime).getTime();
+
+    return start <= now && now < end;
+  }
 }

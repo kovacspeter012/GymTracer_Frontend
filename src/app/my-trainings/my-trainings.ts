@@ -392,6 +392,15 @@ export class MyTrainingsPage implements OnInit {
   isUpcoming(t: TrainerTrainingModel){
     return new Date(t.endTime).getTime() > Date.now();
   }
+  inProgress(t: TrainerTrainingModel){
+    if (!t.startTime || !t.endTime) return false;
+    
+    const now = new Date().getTime();
+    const start = new Date(t.startTime).getTime();
+    const end = new Date(t.endTime).getTime();
+
+    return start <= now && now < end;
+  }
 
   viewTraining(id: number) {
     this.router.navigate(['/trainings', id]);
