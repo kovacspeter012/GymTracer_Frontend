@@ -9,6 +9,7 @@ import { authGuard } from './guards/auth-guard';
 import { TrainingDetails } from './trainingdetails/training-details/training-details';
 import { ProfilePage } from './profilepage/profile-page/profile-page';
 import { TicketsPage } from './ticketspage/tickets-page/tickets-page';
+import { StatisticsPage } from './statisticspage/statistics-page/statistics-page';
 
 export const routes: Routes = [
     {
@@ -22,6 +23,7 @@ export const routes: Routes = [
             {path: 'trainings/:id', component: TrainingDetails, canActivate: [authGuard]},
             {path: 'profile', component: ProfilePage, canActivate: [authGuard]},
             {path: 'tickets', component: TicketsPage, canActivate: [authGuard]},
+            {path: 'statistics', component: StatisticsPage, canActivate: [authGuard]}
         ]
     },
     {
