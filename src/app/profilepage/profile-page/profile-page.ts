@@ -3,7 +3,7 @@ import { UserdataService } from '../services/userdata-service';
 import { ThemeService } from '../../services/theme.service';
 import { DatePipe, NgClass } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
-import { UserProfileModel } from '../userprofile.model.ts/userprofile.model';
+import { UserProfileModel } from '../userprofilemodels/userprofile.model';
 import { CardsList } from '../cards-list/cards-list';
 import { ProfileModificationForm } from '../profile-modification-form/profile-modification-form';
 import { Router } from '@angular/router';
