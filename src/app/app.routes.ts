@@ -10,6 +10,7 @@ import { TrainingDetails } from './trainingdetails/training-details/training-det
 import { ProfilePage } from './profilepage/profile-page/profile-page';
 import { TicketsPage } from './ticketspage/tickets-page/tickets-page';
 import { StatisticsPage } from './statisticspage/statistics-page/statistics-page';
+import { IncomePage } from './incomepage/income-page/income-page';
 
 export const routes: Routes = [
     {
@@ -23,7 +24,8 @@ export const routes: Routes = [
             {path: 'trainings/:id', component: TrainingDetails, canActivate: [authGuard]},
             {path: 'profile', component: ProfilePage, canActivate: [authGuard]},
             {path: 'tickets', component: TicketsPage, canActivate: [authGuard]},
-            {path: 'statistics', component: StatisticsPage, canActivate: [authGuard]}
+            {path: 'statistics', component: StatisticsPage, canActivate: [authGuard]},
+            {path: 'income', component: IncomePage, canActivate: [authGuard]}
         ]
     },
     {
