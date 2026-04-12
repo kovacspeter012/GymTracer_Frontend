@@ -1,4 +1,4 @@
-export interface CardLogItem {
+export interface CardUsage {
   useDate: string;
   cardId: number;
   userId: number;
