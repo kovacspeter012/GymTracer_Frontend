@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OwnedTicketData } from '../models/ownedticketdata.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-owned-ticket-card',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './owned-ticket-card.html',
   styleUrl: './owned-ticket-card.css',
 })

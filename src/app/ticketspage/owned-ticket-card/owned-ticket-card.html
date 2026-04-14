@@ -1,15 +1,15 @@
 <div
-    class="relative bg-linear-to-br from-gray-800 to-gray-900 border border-primary-500/30 p-6 rounded-2xl shadow-lg overflow-hidden">
+    class="relative bg-linear-to-br from-gray-200 to-gray-100 border border-primary-500/30 p-6 rounded-2xl shadow-lg overflow-hidden">
     <div class="absolute top-0 right-0 w-2 h-full bg-primary-500"></div>
 
-    <h3 class="text-lg font-bold text-white mb-1">Monthly Unlimited Pass</h3>
-    <p class="text-sm text-gray-400 mb-4">Valid until: May 1, 2026</p>
+    <h3 class="text-lg font-bold text-black mb-1">{{ticket!.description}}</h3>
+    <p class="text-sm text-gray-600 mb-4">Érvényes: {{ticket!.expirationDate | date}}</p>
 
 
     <div class="flex items-center justify-between mt-auto">
         <div
             class="inline-block bg-primary-500/10 text-primary-400 font-mono text-sm px-3 py-1 rounded-lg border border-primary-500/20 mt-8">
-            Remaining: Unlimited
+            Még ennyiszer használható: {{ticket?.usagesLeft === null ? 'Korlátlan' : ticket?.usagesLeft}}
         </div>
         @if (!ticket!.isPayed) {
             <a (click)="pay()"
