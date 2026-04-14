@@ -7,7 +7,7 @@ import { guestGuard } from './guards/guest-guard';
 import { Trainings } from './trainings/trainings/trainings';
 import { authGuard } from './guards/auth-guard';
 import { TrainingDetails } from './trainingdetails/training-details/training-details';
-import { MyTrainingsPage } from './my-trainings/my-trainings';
+import { MyTrainingsPage } from './my-trainings/my-trainings/my-trainings';
 import { trainerGuard } from './guards/trainer-guard';
 import { userModeGuard } from './guards/user-mode-guard';
 

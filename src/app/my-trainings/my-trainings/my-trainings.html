@@ -1,0 +1,23 @@
+<div class="flex-1 min-h-full w-full px-4 py-8 md:py-12" [ngClass]="theme.getColor()">
+  <div class="w-full max-w-5xl mx-auto">
+    <app-my-training-list
+      [trainings]="trainings"
+      [isLoading]="isLoading"
+      [errorMessage]="errorMessage"
+      [successMessage]="successMessage"
+      [deletingIds]="deletingIds"
+      (create)="openCreate()"
+      (edit)="openEdit($event)"
+      (delete)="deleteTraining($event)"
+      (view)="viewTraining($event)">
+    </app-my-training-list>
+  </div>
+</div>
+
+<app-add-edit-training
+  [show]="showModal"
+  [editingTraining]="editingTraining"
+  [allTrainings]="allTrainings"
+  (closed)="onModalClosed()"
+  (saveSuccess)="onSaveSuccess($event)">
+</app-add-edit-training>
