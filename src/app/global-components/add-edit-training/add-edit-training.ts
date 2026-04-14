@@ -118,9 +118,7 @@ export class AddEditTraining implements OnChanges {
 
   updateTimeline() {
     if (!this.form.startTime) {
-      const todayLocal = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substring(0, 10);
-
-      this.timelineTrainings = this.allTrainings.filter(t => t.startTime.substring(0, 10) === todayLocal);
+      this.timelineTrainings = []
       return;
     }
     const date = this.form.startTime.substring(0, 10);
