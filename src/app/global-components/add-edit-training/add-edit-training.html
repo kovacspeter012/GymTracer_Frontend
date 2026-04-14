@@ -199,25 +199,27 @@
             </div>
           }
 
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-2 items-end">
-            <div class="col-span-2 md:col-span-1">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+            <div class="md:col-span-2">
               <label class="block text-xs font-medium text-gray-600 mb-1">Leírás</label>
               <input type="text" [(ngModel)]="newTicket.description" name="ticketDesc" placeholder="pl. Edzésjegy"
                 class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-primary-400 placeholder:text-gray-600">
             </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Ár (Ft)</label>
-              <input type="number" [(ngModel)]="newTicket.price" name="ticketPrice" min="0"
-                class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-primary-400">
-            </div>
-            <div class="flex items-center gap-2">
-              <label class="flex items-center gap-1 text-xs text-gray-600 cursor-pointer">
+            <div class="flex items-end gap-3 md:col-span-1">
+              <div class="flex-1">
+                <label class="block text-xs font-medium text-gray-600 mb-1">Ár (Ft)</label>
+                <input type="number" [(ngModel)]="newTicket.price" name="ticketPrice" min="0"
+                  class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-primary-400">
+              </div>
+              <label class="flex justify-center items-center gap-1 text-xs text-gray-600 cursor-pointer whitespace-nowrap px-1 h-[34px]">
                 <input type="checkbox" [(ngModel)]="newTicket.isStudent" name="ticketStudent">
                 Diák
               </label>
+            </div>
+            <div class="md:col-span-1">
               <button (click)="addTicket()" type="button"
-                class="px-3 py-1.5 bg-primary-600 hover:bg-primary-500 text-white text-sm font-bold rounded cursor-pointer">
-                + Hozzáad
+                class="w-full px-3 py-1.5 bg-primary-600 hover:bg-primary-500 text-white text-sm font-bold rounded cursor-pointer transition-colors">
+                + Hozzáadás
               </button>
             </div>
           </div>
