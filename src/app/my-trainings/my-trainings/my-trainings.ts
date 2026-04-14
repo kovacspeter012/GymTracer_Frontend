@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { formatErrors } from '../../utils/error-helper';
 import { MyTrainingList } from '../components/my-training-list/my-training-list';
 import { AddEditTraining } from '../../global-components/add-edit-training/add-edit-training';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-my-trainings',
@@ -70,7 +71,13 @@ export class MyTrainingsPage implements OnInit {
   }
 
   loadAllTrainings() {
-    this.trainerService.getAllTrainings().subscribe({
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - environment.pastTrainingDays);
+
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + environment.futureTrainingDays);
+
+    this.trainerService.getAllTrainings(startDate, endDate).subscribe({
       next: (res) => {
         this.allTrainings = res.map(t => ({
           ...t,

@@ -11,6 +11,8 @@ import { AddEditTraining } from "../../global-components/add-edit-training/add-e
 import { TrainerService } from '../../services/trainer.service';
 import { formatErrors } from '../../utils/error-helper';
 import { TrainerTrainingModel } from '../../models/trainer-training.model';
+import { environment } from '../../../environments/environment';
+import { AllTrainingResponse } from '../../trainings/models/trainings.all.model';
 
 @Component({
   selector: 'app-training-details',
@@ -26,6 +28,8 @@ export class TrainingDetails {
 
   isModalOpen = false;
   isCancelling = false;
+
+  allTrainings: AllTrainingResponse[] = []
 
   showEditModal = false;
   editSuccessMessage: string | null = null; 
@@ -85,7 +89,25 @@ export class TrainingDetails {
   openEdit() {
     this.editingTraining = this.training;
     this.showEditModal = true;
-    // this.loadAllTrainings();
+    this.loadAllTrainings();
+  }
+
+  loadAllTrainings() {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - environment.pastTrainingDays);    
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + environment.futureTrainingDays);
+
+    this.trainerService.getAllTrainings(startDate, endDate).subscribe({
+      next: (res) => {
+        this.allTrainings = res.map(t => ({
+          ...t,
+          startTime: this.ensureUtc(t.startTime),
+          endTime: this.ensureUtc(t.endTime)
+        }));
+      },
+      error: () => {}
+    });
   }
 
   onModalClosed() {
