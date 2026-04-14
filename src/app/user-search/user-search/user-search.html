@@ -45,6 +45,11 @@
         <p class="text-red-700 font-medium">{{ errorMessage }}</p>
       </div>
     }
+    @if (secretSearchingMessage) {
+      <div class="bg-red-50 border-l-4 border-green-500 p-4 rounded-md mb-4">
+        <p class="text-green-700 font-medium">{{ secretSearchingMessage }}</p>
+      </div>
+    }
 
     @if (!isLoading && hasSearched) {
       @if (users.length === 0) {

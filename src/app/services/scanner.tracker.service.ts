@@ -53,7 +53,7 @@ export class ScannerTrackerService {
     clearTimeout(this.resetTimer);
 
     if (this.theme.isStaffMode){
-      this.router.navigate(['/users'], { state: { guid: guid } });
+      this.router.navigate(['/users'], { queryParams: { guid: guid } });
     }
   }
 

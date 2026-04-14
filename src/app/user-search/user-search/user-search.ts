@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
 import { UserSearchResult } from '../models/user-search.model';
@@ -22,6 +22,7 @@ export class UserSearch implements OnInit {
   theme = inject(ThemeService);
   userSearchService = inject(UserSearchService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
 
   UserRole = UserRole;
 
@@ -34,8 +35,46 @@ export class UserSearch implements OnInit {
   searchEmail = '';
   searchGuid = '';
 
+  secretSearchGuid?: string;
+  secretSearchingMessage: string | null = null;
+
+
   ngOnInit() {
-    
+    this.route.queryParams.subscribe(params => {
+      if (params['guid']) {
+        this.secretSearchGuid = params['guid'];
+        
+        this.onSecretSearch();
+      }
+    });
+  }
+
+  onSecretSearch(){
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.hasSearched = true;
+    this.secretSearchingMessage = "Qr kód alapú keresés folyamatban...";
+    this.userSearchService.searchUsers(
+      undefined,
+      undefined,
+      this.secretSearchGuid
+    ).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        this.secretSearchGuid = undefined;
+        if(res.length == 0){
+          this.errorMessage = 'A beolvasott qr kód nem érvényes!';
+        }
+        else{
+          this.viewAs(res[0]);
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.secretSearchGuid = undefined;
+        this.errorMessage = 'A beolvasott qr kód nem érvényes!';
+      }
+    });
   }
 
   onSearch() {
