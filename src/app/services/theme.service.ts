@@ -8,15 +8,26 @@ import { UserRole } from '../models/user.role.model';
 export class ThemeService {
   auth = inject(AuthService);
   
-  isStaffMode = false;
-  isPretendMode = false;
+  isStaffMode = localStorage.getItem('staff_mode') === 'true';
+  get isPretendMode(){
+    return this.auth.pretendedUser !== null;
+  }
+
+  setStaffMode(value: boolean) {
+    this.isStaffMode = value;
+    localStorage.setItem('staff_mode', String(value));
+  }
 
   getColor(){
     if(this.auth.user){
       if(this.auth.user.role !== UserRole.staff && this.auth.user.role !== UserRole.admin){
-        this.isStaffMode = false;
-        this.isPretendMode = false;
+        this.setStaffMode(false);
+        return "";
       }
+    }
+    else{
+      this.setStaffMode(false);
+      return "";
     }
 
     if (this.isStaffMode){
