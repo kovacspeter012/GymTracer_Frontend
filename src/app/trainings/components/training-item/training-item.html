@@ -7,7 +7,18 @@
 </div>
 
 <div class="p-5 flex-1 flex flex-col">
-  <h3 class="text-xl font-bold text-gray-800 mb-2">{{ training.name }}</h3>
+  <div class="flex items-center gap-2 mb-2">
+    <h3 class="text-xl font-bold text-gray-800">{{ training.name }}</h3>
+    @if(endedInPast()){
+      <span class="px-2 py-0.5 text-xs bg-gray-100 text-gray-500 rounded font-medium shrink-0">Véget ért</span>
+    }
+    @else if(inProgress()){
+      <span class="px-2 py-0.5 text-xs bg-green-100 text-green-700 rounded font-medium shrink-0 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 bg-green-600 rounded-full animate-pulse"></span>
+        Folyamatban
+      </span>
+    }
+  </div>
   <div class="text-sm text-gray-600 mb-4 flex-1">
     <p class="mb-1"><span class="font-semibold text-gray-700">Edző:</span> {{ training.trainer.name }}</p>
     <p class="mb-1"><span class="font-semibold text-gray-700">Időpont:</span> {{ training.startTime | date:'short' }} -
