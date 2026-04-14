@@ -18,6 +18,7 @@ import { CardusagePage } from './cardusagepage/cardusage-page/cardusage-page';
 import { UserSearch } from './user-search/user-search/user-search';
 import { staffModeGuard } from './guards/staff-mode-guard';
 import { staffGuard } from './guards/staff-guard';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
     {
@@ -30,11 +31,11 @@ export const routes: Routes = [
             {path: 'trainings', component: Trainings, canActivate: [authGuard, userModeGuard]},
             {path: 'trainings/:id', component: TrainingDetails, canActivate: [authGuard, userModeGuard]},
             {path: 'my-trainings', component: MyTrainingsPage, canActivate: [authGuard, trainerGuard, userModeGuard]},
-            {path: 'profile', component: ProfilePage, canActivate: [authGuard]},
-            {path: 'tickets', component: TicketsPage, canActivate: [authGuard]},
-            {path: 'statistics', component: StatisticsPage, canActivate: [authGuard]},
-            {path: 'income', component: IncomePage, canActivate: [authGuard]},
-            {path: 'card-usage', component: CardusagePage, canActivate: [authGuard]},
+            {path: 'profile', component: ProfilePage, canActivate: [authGuard, userModeGuard]},
+            {path: 'tickets', component: TicketsPage, canActivate: [authGuard, userModeGuard]},
+            {path: 'statistics', component: StatisticsPage, canActivate: [authGuard, staffGuard, staffModeGuard]},
+            {path: 'income', component: IncomePage, canActivate: [authGuard, adminGuard, staffModeGuard]},
+            {path: 'card-usage', component: CardusagePage, canActivate: [authGuard, adminGuard, staffModeGuard]},
             {path: 'users', component: UserSearch, canActivate: [authGuard, staffGuard, staffModeGuard]}
         ]
     },
