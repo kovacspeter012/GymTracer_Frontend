@@ -10,6 +10,11 @@ import { TrainingDetails } from './trainingdetails/training-details/training-det
 import { MyTrainingsPage } from './my-trainings/my-trainings/my-trainings';
 import { trainerGuard } from './guards/trainer-guard';
 import { userModeGuard } from './guards/user-mode-guard';
+import { ProfilePage } from './profilepage/profile-page/profile-page';
+import { TicketsPage } from './ticketspage/tickets-page/tickets-page';
+import { StatisticsPage } from './statisticspage/statistics-page/statistics-page';
+import { IncomePage } from './incomepage/income-page/income-page';
+import { CardusagePage } from './cardusagepage/cardusage-page/cardusage-page';
 
 export const routes: Routes = [
     {
@@ -21,7 +26,12 @@ export const routes: Routes = [
             {path: 'registration', component: Registration, canActivate: [guestGuard]},
             {path: 'trainings', component: Trainings, canActivate: [authGuard, userModeGuard]},
             {path: 'trainings/:id', component: TrainingDetails, canActivate: [authGuard, userModeGuard]},
-            {path: 'my-trainings', component: MyTrainingsPage, canActivate: [authGuard, trainerGuard, userModeGuard]}
+            {path: 'my-trainings', component: MyTrainingsPage, canActivate: [authGuard, trainerGuard, userModeGuard]},
+            {path: 'profile', component: ProfilePage, canActivate: [authGuard]},
+            {path: 'tickets', component: TicketsPage, canActivate: [authGuard]},
+            {path: 'statistics', component: StatisticsPage, canActivate: [authGuard]},
+            {path: 'income', component: IncomePage, canActivate: [authGuard]},
+            {path: 'card-usage', component: CardusagePage, canActivate: [authGuard]}
         ]
     },
     {
