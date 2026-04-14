@@ -11,6 +11,7 @@ import { ProfilePage } from './profilepage/profile-page/profile-page';
 import { TicketsPage } from './ticketspage/tickets-page/tickets-page';
 import { StatisticsPage } from './statisticspage/statistics-page/statistics-page';
 import { IncomePage } from './incomepage/income-page/income-page';
+import { CardusagePage } from './cardusagepage/cardusage-page/cardusage-page';
 
 export const routes: Routes = [
     {
@@ -25,7 +26,8 @@ export const routes: Routes = [
             {path: 'profile', component: ProfilePage, canActivate: [authGuard]},
             {path: 'tickets', component: TicketsPage, canActivate: [authGuard]},
             {path: 'statistics', component: StatisticsPage, canActivate: [authGuard]},
-            {path: 'income', component: IncomePage, canActivate: [authGuard]}
+            {path: 'income', component: IncomePage, canActivate: [authGuard]},
+            {path: 'card-usage', component: CardusagePage, canActivate: [authGuard]}
         ]
     },
     {
