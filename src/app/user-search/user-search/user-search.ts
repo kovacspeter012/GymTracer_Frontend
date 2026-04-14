@@ -62,6 +62,7 @@ export class UserSearch implements OnInit {
       next: (res) => {
         this.isLoading = false;
         this.secretSearchGuid = undefined;
+        this.secretSearchingMessage = null;
         if(res.length == 0){
           this.errorMessage = 'A beolvasott qr kód nem érvényes!';
         }
@@ -72,6 +73,7 @@ export class UserSearch implements OnInit {
       error: (err) => {
         this.isLoading = false;
         this.secretSearchGuid = undefined;
+        this.secretSearchingMessage = null;
         this.errorMessage = 'A beolvasott qr kód nem érvényes!';
       }
     });
