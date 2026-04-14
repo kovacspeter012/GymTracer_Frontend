@@ -13,7 +13,7 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './header.css',
 })
 export class Header implements OnInit, OnDestroy {
-  theme = inject(ThemeService);
+    theme = inject(ThemeService);
   auth = inject(AuthService);
   private router = inject(Router);
 
@@ -36,36 +36,33 @@ export class Header implements OnInit, OnDestroy {
 
   startCountdown() {
     const updateTimer = () => {
-      if (this.auth.validUntil) {
-        if (!this.auth.validUntil) {
-          this.remainingTime = '';
-          return; 
+      if (!this.auth.validUntil) {
+        this.remainingTime = '';
+        return;
+      }
+
+      const now = new Date().getTime();
+      const distance = this.auth.validUntil.getTime() - now;
+
+      if (distance <= 0) {
+        this.remainingTime = 'Lejárt!';
+
+        if (this.auth.token) {
+          this.auth.HandleLogout();
         }
 
-        const now = new Date().getTime();
-        const distance = this.auth.validUntil.getTime() - now;
-
-        if (distance <= 0) {
-          this.remainingTime = 'Lejárt!';
-          clearInterval(this.timerInterval);
-          
-          if (this.auth.token) {
-            this.auth.HandleLogout();
-          }
-
-          this.router.navigate(['/login'], { 
-            state: { 
-              message: 'Inaktivitás miatt automatikusan kijelentkeztettük.', 
-              type: 'error'
-            } 
-          });
-        } else {
-          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          
-          const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
-          this.remainingTime = `${minutes}:${formattedSeconds}`;
-        }
+        this.router.navigate(['/login'], { 
+          state: { 
+            message: 'Inaktivitás miatt automatikusan kijelentkeztettük.', 
+            type: 'error'
+          } 
+        });
+      } else {
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+        this.remainingTime = `${minutes}:${formattedSeconds}`;
       }
     };
 
@@ -83,7 +80,16 @@ export class Header implements OnInit, OnDestroy {
   }
 
   toggleStaff($event: MatSlideToggleChange){
-    this.theme.isStaffMode = $event.checked;
+    this.theme.setStaffMode($event.checked);
+    if ($event.checked) {
+      this.router.navigate(['/users']);
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
+  logout(){
+    this.auth.HandleLogout();
+    this.router.navigate(['/login']);
+  }
 }
