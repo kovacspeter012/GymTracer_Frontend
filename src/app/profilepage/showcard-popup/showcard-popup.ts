@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { CardDataModel } from '../userprofile.model.ts/carddata.model';
+import { CardDataModel } from '../userprofilemodels/carddata.model';
 import { ThemeService } from '../../services/theme.service';
 import { CarddataService } from '../services/carddata-service';
 import { CommonModule } from '@angular/common';

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { UserProfileModel } from '../userprofile.model.ts/userprofile.model';
+import { UserProfileModel } from '../userprofilemodels/userprofile.model';
 import { ThemeService } from '../../services/theme.service';
 import { DatePipe, NgClass } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';

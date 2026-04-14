@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CarddataService } from '../services/carddata-service';
 import { AuthService } from '../../services/auth.service';
-import { CardDataModel } from '../userprofile.model.ts/carddata.model';
+import { CardDataModel } from '../userprofilemodels/carddata.model';
 import { ThemeService } from '../../services/theme.service';
 import { DatePipe, NgClass } from '@angular/common';
 import { ShowcardPopup } from '../showcard-popup/showcard-popup';
