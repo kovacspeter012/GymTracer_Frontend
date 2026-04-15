@@ -47,7 +47,17 @@
             <a class="nav-element" routerLink="/profile">Profilom</a>
           }
         </div>
-
+        <button 
+          class="p-2 rounded-full hover:bg-black/10 transition-colors focus:outline-none cursor-pointer flex items-center justify-center nav:ml-auto max-nav:mt-4"
+          (click)="theme.toggleTheme()" 
+          [title]="theme.isDarkMode ? 'Világos mód' : 'Sötét mód'">
+          
+          @if(theme.isDarkMode) {
+            <img class="w-7 h-7" src="images/dark_mode.svg"/>
+          } @else {
+            <img class="w-7 h-7" src="images/light_mode.svg"/>
+          }
+        </button>
         @if(auth.actingUserRole !== UserRole.not_found){
           <div class="flex flex-col nav:flex-row items-center justify-center max-nav:py-6 max-nav:border-t max-nav:border-gray-800/20 nav:pl-4 nav:ml-4 nav:border-l border-gray-600 gap-4 nav:gap-5">
             
@@ -67,9 +77,17 @@
               </div>
             }
 
-            <button class="p-2 rounded-full hover:bg-black/10 transition-colors focus:outline-none cursor-pointer flex items-center justify-center" 
-                    (click)="logout()" title="Kijelentkezés">
-              <img class="w-7 h-7" src="images/logout.svg" alt="Logout icon"/>
+            <button 
+              class="p-2 rounded-full hover:bg-black/10 transition-colors focus:outline-none cursor-pointer flex items-center justify-center" 
+              (click)="logout()"
+              title="Kijelentkezés">
+
+              @if(theme.isDarkMode){
+                <img class="w-7 h-7" src="images/logout_dark.svg"/>
+              }
+              @else {
+                <img class="w-7 h-7" src="images/logout_light.svg"/>
+              }
             </button>
             
           </div>

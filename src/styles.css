@@ -20,3 +20,21 @@
   --color-primary-500: #ff6900;
   --color-primary-600: #f54900;
 }
+
+.dark {
+  --color-primary-400: #a31c1c;
+  --color-primary-500: #b32020;
+  --color-primary-600: #c22424;
+}
+
+.dark.theme-yellow, .dark .theme-yellow {
+  --color-primary-400: #96570a;
+  --color-primary-500: #a6630b;
+  --color-primary-600: #b56f0c;
+}
+
+.dark.theme-orange, .dark .theme-orange {
+  --color-primary-400: #a83810;
+  --color-primary-500: #b83e12;
+  --color-primary-600: #c84414;
+}

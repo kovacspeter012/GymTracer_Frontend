@@ -8,6 +8,7 @@ import { UserRole } from '../models/user.role.model';
 export class ThemeService {
   auth = inject(AuthService);
   
+  isDarkMode = localStorage.getItem('dark_mode') === 'false';
   isStaffMode = localStorage.getItem('staff_mode') === 'true';
   get isPretendMode(){
     return this.auth.pretendedUser !== null;
@@ -39,5 +40,16 @@ export class ThemeService {
       }
     }
     return "";
+  }
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('dark_mode', String(this.isDarkMode));
+    
+    if (this.isDarkMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
   }
 }

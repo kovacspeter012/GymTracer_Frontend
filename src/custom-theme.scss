@@ -38,9 +38,16 @@ $theme-orange: mat.m2-define-light-theme((color: (primary: $orange-palette, acce
 
 body {
   color-scheme: light;
+  // transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
   background-color: var(--mat-sys-surface, #ffffff);
   color: var(--mat-sys-on-surface, #000000);
   margin: 0;
+
+  &.dark {
+    color-scheme: dark;
+    background-color: var(--mat-sys-surface, #1b1b1b);
+    color: var(--mat-sys-on-surface, #f8f8f8);
+  }
 }
 
 .mat-mdc-slide-toggle .mdc-switch__track {
