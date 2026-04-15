@@ -73,15 +73,31 @@ $theme-orange-dark: mat.m2-define-dark-theme((color: (primary: $orange-dark-pale
 
 body {
   color-scheme: light;
-  transition: background-color 300ms ease-in-out;
-  background-color: var(--mat-sys-surface, #ffffff);
-  color: var(--mat-sys-on-surface, #000000);
   margin: 0;
 
   &.dark {
     color-scheme: dark;
-    background-color: var(--mat-sys-surface, #0a0a0a);
-    color: var(--mat-sys-on-surface, #f8f8f8);
+  }
+}
+
+.mat-mdc-slide-toggle {
+  .mdc-switch__track {
+    transition-property: background-color, border-color !important;
+    transition-duration: 300ms !important;
+    transition-timing-function: ease-in-out !important;
+  }
+  .mdc-switch__handle {
+    transition-property: background-color !important;
+    transition-duration: 300ms !important;
+    transition-timing-function: ease-in-out !important;
+  }
+  .mdc-switch__icon {
+    transition-property: color, fill !important;
+    transition-duration: 300ms !important;
+    transition-timing-function: ease-in-out !important;
+  }
+  .mdc-label {
+    transition: color 300ms ease-in-out !important;
   }
 }
 
