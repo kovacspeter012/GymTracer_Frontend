@@ -45,7 +45,7 @@
       @for (t of trainings; track t.id) {
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 flex flex-col md:flex-row items-center gap-4 hover:border-primary-400 dark:hover:border-primary-500 transition-all">
 
-          <img [src]="t.image" [alt]="t.name" (error)="$any($event.target).src='images/training_default.jpg'"
+          <img [src]="t.image.includes('http') ? t.image : 'images/'+t.image"  [alt]="t.name" (error)="$any($event.target).src='images/training_default.jpg'"
             class="w-20 h-20 object-cover rounded-lg shrink-0"
             [class.opacity-40]="!isUpcoming(t)">
 

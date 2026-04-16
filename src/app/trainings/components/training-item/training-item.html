@@ -1,7 +1,7 @@
 <div class="h-40 bg-gray-200 dark:bg-gray-800 transition-colors duration-300 ease-in-out w-full relative">
   <img class="w-full h-full object-cover"
       (error)="onImgError($event)"
-      [src]="training.image" 
+      [src]="training.image.includes('http') ? training.image : 'images/'+training.image" 
       [alt]="training.name"
       draggable="false">
 </div>
