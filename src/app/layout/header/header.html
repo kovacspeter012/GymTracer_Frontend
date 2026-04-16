@@ -30,7 +30,7 @@
             <a class="nav-element" routerLink="/login">Bejelentkezés</a>
             <a class="nav-element" routerLink="/registration">Regisztráció</a>
           }
-          @else if(theme.isStaffMode && (auth.actingUserRole === UserRole.staff || auth.actingUserRole === UserRole.admin)){
+          @else if(theme.isStaffMode && !theme.isPretendMode && (auth.actingUserRole === UserRole.staff || auth.actingUserRole === UserRole.admin)){
             <a class="nav-element" routerLink="/users">Felhasználók</a>
             <a class="nav-element" routerLink="/statistics">Statisztikák</a>
             @if(auth.actingUserRole === UserRole.admin){
