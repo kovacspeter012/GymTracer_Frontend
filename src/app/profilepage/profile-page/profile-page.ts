@@ -8,6 +8,7 @@ import { CardsList } from '../cards-list/cards-list';
 import { ProfileModificationForm } from '../profile-modification-form/profile-modification-form';
 import { Router } from '@angular/router';
 import { DeleteUserPopup } from '../delete-user-popup/delete-user-popup';
+import { UserRole } from '../../models/user.role.model';
 
 @Component({
   selector: 'app-profile-page',
@@ -65,5 +66,25 @@ export class ProfilePage implements OnInit {
 
   deleteCanceled(){
     this.isDeleteing = false;
+  }
+
+  getRoleLabel(role: UserRole) {
+    switch(role) {
+      case UserRole.admin: return 'Admin';
+      case UserRole.staff: return 'Személyzet';
+      case UserRole.trainer: return 'Edző';
+      case UserRole.customer: return 'Vendég';
+      default: return '?';
+    }
+  }
+
+  getRoleBadgeClass(role: UserRole) {
+    switch(role) {
+      case UserRole.admin: return 'bg-purple-100 text-purple-800';
+      case UserRole.staff: return 'bg-yellow-100 text-yellow-800';
+      case UserRole.trainer: return 'bg-blue-100 text-blue-800';
+      case UserRole.customer: return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
   }
 }
