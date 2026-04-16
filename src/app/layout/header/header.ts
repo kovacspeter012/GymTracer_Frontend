@@ -1,6 +1,6 @@
 import { NgClass, NgOptimizedImage } from '@angular/common';
 import { Component, ElementRef, HostListener, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSlideToggle, MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
 import { UserRole } from '../../models/user.role.model';
@@ -26,6 +26,7 @@ export class Header implements OnInit, OnDestroy {
 
   @ViewChild('burgerButton') burgerButton?: ElementRef<HTMLButtonElement>;
   @ViewChild('themeButton') themeButton?: ElementRef<HTMLButtonElement>;
+  @ViewChild('staffSlide', { read: ElementRef }) staffSlide?: ElementRef;
 
   ngOnInit() {
     this.startCountdown();
@@ -46,6 +47,9 @@ export class Header implements OnInit, OnDestroy {
 
     const clickedTheme = this.themeButton && this.themeButton.nativeElement.contains(event.target as Node);
     if(clickedTheme) return;
+
+    const clickedSlide = this.staffSlide && this.staffSlide.nativeElement.contains(event.target as Node);
+    if(clickedSlide) return;
 
     if(this.menuOpen){
       this.menuOpen = false;
