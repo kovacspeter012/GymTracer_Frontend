@@ -66,10 +66,10 @@
             
             <div class="flex flex-col items-center justify-center leading-tight">
               <p class="font-semibold truncate max-w-[200px] transition-colors duration-300 ease-in-out text-gray-900 dark:text-gray-100" [title]="auth.user?.name">
-                Üdv, {{ auth.actingUser?.name }}!
+                {{ auth.user?.name }}
               </p>
               <p class="text-xs font-mono mt-0.5 transition-colors duration-300 ease-in-out text-gray-800 dark:text-gray-300">
-                <span>{{ remainingTime }}</span>
+                <span>({{ remainingTime }})</span>
               </p>
             </div>
 

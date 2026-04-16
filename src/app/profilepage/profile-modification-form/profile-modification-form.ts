@@ -57,13 +57,12 @@ export class ProfileModificationForm implements OnInit {
       this.userData!.birthDate = new Date(this.userDataDate);
     }
 
-    this.userdataService.modifyUserData(this.authService.user!.id, this.userData!).subscribe({
+    this.userdataService.modifyUserData(this.authService.actingUser!.id, this.userData!).subscribe({
       next: (res) => {        
         this.isSuccessful.emit(true);
       },
       error: (error) => {
-        console.log(error.message);
-        this.errorMsg = "An error occurred while updating your profile. Please try again later.";
+        this.errorMsg = error.error.error || error.error.message || "Probléma volt a felhasználó módosítása közben, próbáld meg később!";
       }
     });
   }
