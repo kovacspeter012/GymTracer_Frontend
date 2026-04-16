@@ -13,7 +13,7 @@
         <p class="text-2xl font-bold transition-color duration-300 ease-in-out text-black dark:text-white">GymTracer</p>
       </a>
 
-      <button class="nav:hidden p-2 rounded focus:outline-none cursor-pointer hover:bg-black/10" (click)="toggleMenu()">
+      <button #burgerButton class="nav:hidden p-2 rounded focus:outline-none cursor-pointer hover:bg-black/10" (click)="toggleMenu()">
         <img class="w-8 h-8" src="images/hamburger.svg" alt="Menu icon"/>
       </button>
     </div>
@@ -48,6 +48,7 @@
           }
         </div>
         <button 
+          #themeButton
           class="self-center nav:mx-1 max-nav:my-1 w-11 h-11 rounded-full hover:bg-black/10 transition-colors duration-300 ease-in-out focus:outline-none cursor-pointer flex items-center justify-center relative overflow-hidden"
           (click)="theme.toggleTheme()" 
           [title]="theme.isDarkMode ? 'Világos mód' : 'Sötét mód'">
