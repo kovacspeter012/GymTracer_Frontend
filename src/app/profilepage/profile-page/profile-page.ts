@@ -30,6 +30,8 @@ export class ProfilePage implements OnInit {
     this.userdataService.getUserData(this.authService.actingUser!.id).subscribe({
       next: (res) => {
         this.userData = res;
+        if(this.authService.pretendedUser) this.authService.setPretendedUser(res);
+        else this.authService.setUser(res);
       },
       error: (error) => {
         console.log(error.url);
@@ -48,6 +50,8 @@ export class ProfilePage implements OnInit {
     this.userdataService.getUserData(this.authService.actingUser!.id).subscribe({
       next: (res) => {
         this.userData = res;
+        if(this.authService.pretendedUser) this.authService.setPretendedUser(res);
+        else this.authService.setUser(res);
       },
       error: (error) => {
         console.log(error.url);
