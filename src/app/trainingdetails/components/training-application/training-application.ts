@@ -2,11 +2,11 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Ticket } from '../../models/training.ticket.model';
 import { TrainingDetailService } from '../../service/training-detail.service';
 import { Router } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
+import { NgClass, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'training-detail-application',
-  imports: [DecimalPipe],
+  imports: [NgClass, DecimalPipe],
   templateUrl: './training-application.html',
   styleUrl: './training-application.css',
 })
