@@ -11,10 +11,11 @@ import { OwnedTicketCard } from '../owned-ticket-card/owned-ticket-card';
 import { OwnedTicketData } from '../models/ownedticketdata.model';
 import { TicketModal } from '../ticket-modal/ticket-modal';
 import { PaymentModal } from '../payment-modal/payment-modal';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-tickets-page',
-  imports: [TicketsCard, FormsModule, OwnedTicketCard, TicketModal, PaymentModal],
+  imports: [NgClass, TicketsCard, FormsModule, OwnedTicketCard, TicketModal, PaymentModal],
   templateUrl: './tickets-page.html',
   styleUrl: './tickets-page.css',
 })
