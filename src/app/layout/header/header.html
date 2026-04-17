@@ -9,8 +9,15 @@
     
     <div class="flex justify-between items-center w-full nav:w-auto h-18 px-4 nav:px-2 select-none shrink-0 bg-primary-600 transition-colors duration-300 ease-in-out relative z-10">
       <a class="flex items-center space-x-2" routerLink="/">
-        <img ngSrc="images/GymTracer_logo.svg" width="50" height="50" priority alt="GymTracer Logo"  draggable="false">
-        <p class="text-2xl font-bold transition-color duration-300 ease-in-out text-black dark:text-white">GymTracer</p>
+        <img class="absolute transition-opacity duration-300 ease-in-out" width="50" height="50"
+            [ngClass]="theme.isDarkMode ? 'opacity-0' : 'opacity-100'"
+            src="images/GymTracer_logo_light.svg" />
+
+        <img class="absolute transition-opacity duration-300 ease-in-out" width="50" height="50"
+            [ngClass]="theme.isDarkMode ? 'opacity-100' : 'opacity-0'"
+            src="images/GymTracer_logo_dark.svg" />
+            
+        <p class="ml-15 text-2xl font-bold transition-color duration-300 ease-in-out text-black dark:text-white">GymTracer</p>
       </a>
 
       <button #burgerButton class="nav:hidden p-2 rounded focus:outline-none cursor-pointer hover:bg-black/10" (click)="toggleMenu()">
