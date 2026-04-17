@@ -54,6 +54,52 @@
             }
         </div>
 
+        @if (authService.pretendedUser) {
+            <div class="sm:col-span-2 bg-gray-100/50 dark:bg-gray-900/50 p-5 rounded-2xl border border-gray-200/50 dark:border-gray-800 transition-colors" [ngClass]="theme.getColor()">
+                
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-gray-700 dark:text-gray-400 text-xs font-bold uppercase tracking-widest">Jegyek</p>
+                    <span class="text-xs font-medium bg-gray-300 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-md transition-colors">
+                        {{ tickets ? tickets.length : 0 }} Elérhető
+                    </span>
+                </div>
+                
+                <div class="flex flex-wrap gap-4 mb-6">
+                    @if (tickets && tickets.length > 0) {
+                        @for (ticket of tickets; track $index) {
+                            <app-tickets-card class="flex-1 min-w-[300px]"
+                                [ticket]="ticket"
+                                [isPaying]="paymentId === ticket.paymentId" 
+                                (localPay)="onLocalPay($event)">
+                            </app-tickets-card>
+                        }
+                    } @else {
+                        <div class="w-full text-center text-gray-500 dark:text-gray-400 py-6 bg-gray-200/50 dark:bg-gray-800/50 rounded-xl border border-gray-300/50 dark:border-gray-700 shadow-inner text-sm">
+                            A felhasználónak nincsenek elérhető jegyei.
+                        </div>
+                    }
+                </div>
+
+                <div class="flex flex-col items-center justify-center gap-4 border-t border-gray-300/50 dark:border-gray-700 pt-5">
+                    
+                    <label class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 font-medium cursor-pointer select-none hover:text-black dark:hover:text-white transition-colors">
+                        <input type="checkbox" [(ngModel)]="entryWithoutTicket" 
+                            class="h-6 w-6 sm:h-5 sm:w-5 accent-primary-600 border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded transition-colors duration-300 ease-in-out">
+                        Beléptetés jegy nélkül
+                    </label>
+
+                    <button (click)="openGate()" 
+                        class="w-full sm:w-auto min-w-[200px] bg-primary-600 hover:bg-primary-500 text-white px-6 py-2.5 rounded-xl font-medium transition-colors text-sm shadow-sm hover:cursor-pointer flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                        </svg>
+                        Beléptetés
+                    </button>
+                    
+                </div>
+            </div>
+        }
+
         <app-cards-list class="sm:col-span-2"></app-cards-list>
     </div>
     }

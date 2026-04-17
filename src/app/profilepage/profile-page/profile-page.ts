@@ -9,10 +9,14 @@ import { ProfileModificationForm } from '../profile-modification-form/profile-mo
 import { Router } from '@angular/router';
 import { DeleteUserPopup } from '../delete-user-popup/delete-user-popup';
 import { UserRole } from '../../models/user.role.model';
+import { TicketsCard } from "../tickets-card/tickets-card";
+import { OwnedTicketData } from '../userprofilemodels/userticket.model';
+import { Usertickets } from '../services/usertickets';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile-page',
-  imports: [NgClass, DatePipe, CardsList, ProfileModificationForm, DeleteUserPopup],
+  imports: [NgClass, FormsModule, DatePipe, CardsList, ProfileModificationForm, DeleteUserPopup, TicketsCard],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })
@@ -21,11 +25,17 @@ export class ProfilePage implements OnInit {
   authService = inject(AuthService);
   userdataService = inject(UserdataService);
   router = inject(Router);
+  userticketService = inject(Usertickets);
 
   userData: UserProfileModel | null = null;
   copyOfUserData: UserProfileModel | null = null;
   isModifing = false;
   isDeleteing = false;
+
+  tickets: OwnedTicketData[] = [];
+  entryWithoutTicket = false;
+
+  paymentId: number | null = null;
 
   ngOnInit(): void {
     this.userdataService.getUserData(this.authService.actingUser!.id).subscribe({
@@ -38,6 +48,17 @@ export class ProfilePage implements OnInit {
         console.log(error.url);
       }
     });
+
+    if(this.authService.pretendedUser){
+      this.userticketService.getOwnedTicketsOfUser(this.authService.actingUser!.id).subscribe({
+        next: (res) => {
+          this.tickets = res;
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
+    }
   }
 
   toggleModification() {
@@ -86,5 +107,29 @@ export class ProfilePage implements OnInit {
       case UserRole.customer: return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
+  }
+
+  onLocalPay(ticket: OwnedTicketData) {
+    if (this.paymentId !== null) return;
+
+    const userId = this.authService.actingUser!.id;
+    this.paymentId = ticket.paymentId;
+
+    this.userticketService.payForOwnedTicket(userId, this.paymentId).subscribe({
+      next: () => {
+        const index = this.tickets.findIndex(t => t.paymentId === ticket.paymentId);
+        if (index !== -1) {
+          this.tickets[index].isPayed = true;
+        }
+        this.paymentId = null;
+      },
+      error: (err) => {
+        this.paymentId = null;
+      }
+    });
+  }
+
+  openGate(){
+
   }
 }
