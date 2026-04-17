@@ -82,25 +82,45 @@
 
                 <div class="flex flex-col items-center justify-center gap-4 border-t border-gray-300/50 dark:border-gray-700 pt-5">
                     
-                    <label class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 font-medium cursor-pointer select-none hover:text-black dark:hover:text-white transition-colors">
-                        <input type="checkbox" [(ngModel)]="entryWithoutTicket" 
-                            class="h-6 w-6 sm:h-5 sm:w-5 accent-primary-600 border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded transition-colors duration-300 ease-in-out">
+                    <label class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 font-medium select-none hover:text-black dark:hover:text-white transition-colors"
+                           [ngClass]="{'opacity-50 cursor-not-allowed': isGateLoading, 'cursor-pointer': !isGateLoading}">
+                        <input type="checkbox" [(ngModel)]="entryWithoutTicket" [disabled]="isGateLoading"
+                            class="h-6 w-6 sm:h-5 sm:w-5 accent-primary-600 border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded transition-colors duration-300 ease-in-out disabled:opacity-50">
                         Beléptetés jegy nélkül
                     </label>
 
-                    <button (click)="openGate()" 
-                        class="w-full sm:w-auto min-w-[200px] bg-primary-600 hover:bg-primary-500 text-white px-6 py-2.5 rounded-xl font-medium transition-colors text-sm shadow-sm hover:cursor-pointer flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                        </svg>
-                        Beléptetés
+                    <button (click)="openGate()" [disabled]="isGateLoading"
+                        class="w-full sm:w-auto min-w-[200px] bg-primary-600 hover:bg-primary-500 text-white px-6 py-2.5 rounded-xl font-medium transition-colors text-sm shadow-sm flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        [ngClass]="{'cursor-not-allowed': isGateLoading, 'hover:cursor-pointer': !isGateLoading}">
+                        
+                        @if (isGateLoading) {
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Feldolgozás...
+                        } @else {
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                            </svg>
+                            Beléptetés
+                        }
                     </button>
                     
+                    @if (gateMessage) {
+                        <div class="text-sm font-medium px-4 py-2 rounded-lg text-center w-full sm:w-auto transition-all"
+                             [ngClass]="{
+                                'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800': gateMessage.isError,
+                                'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800': !gateMessage.isError
+                             }">
+                            {{ gateMessage.text }}
+                        </div>
+                    }
                 </div>
             </div>
         }
 
-        <app-cards-list class="sm:col-span-2"></app-cards-list>
+        <app-cards-list class="sm:col-span-2" [(cardsOfUser)]="cards"></app-cards-list>
     </div>
     }
     @else {

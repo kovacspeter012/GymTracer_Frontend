@@ -13,6 +13,9 @@ import { TicketsCard } from "../tickets-card/tickets-card";
 import { OwnedTicketData } from '../userprofilemodels/userticket.model';
 import { Usertickets } from '../services/usertickets';
 import { FormsModule } from '@angular/forms';
+import { CardDataModel } from '../userprofilemodels/carddata.model';
+import { GateService } from '../services/gate-service';
+import { Usage_Gate } from '../userprofilemodels/gate.enum.model';
 
 @Component({
   selector: 'app-profile-page',
@@ -26,6 +29,7 @@ export class ProfilePage implements OnInit {
   userdataService = inject(UserdataService);
   router = inject(Router);
   userticketService = inject(Usertickets);
+  gateService = inject(GateService);
 
   userData: UserProfileModel | null = null;
   copyOfUserData: UserProfileModel | null = null;
@@ -36,6 +40,12 @@ export class ProfilePage implements OnInit {
   entryWithoutTicket = false;
 
   paymentId: number | null = null;
+
+  isGateLoading = false;
+  gateMessage: { text: string; isError: boolean } | null = null;
+  
+  cards: CardDataModel[] = [];
+  mainGateId: string | number = 0;
 
   ngOnInit(): void {
     this.userdataService.getUserData(this.authService.actingUser!.id).subscribe({
@@ -129,7 +139,49 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  openGate(){
+  openGate() {
+    console.log('asd')
+    if (!this.cards || this.cards.length === 0) {
+      this.gateMessage = { 
+        text: 'Nincs kártya társítva ehhez a felhasználóhoz! Kérjük, előbb rendeljen hozzá egyet.', 
+        isError: true 
+      };
+      return;
+    }
 
+    const cardCode = this.cards[0].code;
+
+    this.isGateLoading = true;
+    this.gateMessage = null;
+
+    this.gateService.enterGate(Usage_Gate.main_entrance, cardCode, this.entryWithoutTicket, true).subscribe({
+        next: (response) => {
+          this.gateMessage = { 
+            text: response.message || 'Sikeres beléptetés!', 
+            isError: false 
+          };
+          setTimeout(() => this.gateMessage = null, 3000);
+
+          this.isGateLoading = false;
+        },
+        error: (err) => {
+          let errorMsg = 'Ismeretlen hiba történt.';
+          
+          if (typeof err.error === 'string') {
+            errorMsg = err.error;
+          } else if (err.error?.message) {
+            errorMsg = err.error.message;
+          } else if (err.error?.errors) {
+            errorMsg = Object.values(err.error.errors).flat().join(', ');
+          }
+
+          this.gateMessage = { 
+            text: errorMsg, 
+            isError: true 
+          };
+
+          this.isGateLoading = false;
+        }
+      });
   }
 }
