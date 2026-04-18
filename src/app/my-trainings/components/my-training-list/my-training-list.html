@@ -65,7 +65,7 @@
                 }
               </div>
             </div>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ t.startTime | date:'short' }} – {{ t.endTime | date:'shortTime' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ t.startTime | date:'yyyy. MM. dd. HH:mm':'':'hu' }} - {{ t.endTime | date:'HH:mm':'':'hu' }}</p>
             <p class="text-sm text-gray-400 dark:text-gray-500">Max {{ t.maxParticipant }} fő</p>
           </div>
           <div class="flex flex-wrap justify-center gap-2 shrink-0">

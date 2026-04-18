@@ -23,8 +23,7 @@
   
   <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-1 transition-colors duration-300 ease-in-out">
     <p class="mb-1"><span class="font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-300 ease-in-out">Edző:</span> {{ training.trainer.name }}</p>
-    <p class="mb-1"><span class="font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-300 ease-in-out">Időpont:</span> {{ training.startTime | date:'short' }} -
-      {{ training.endTime | date:'shortTime' }}</p>
+    <p class="mb-1"><span class="font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-300 ease-in-out">Időpont:</span> {{ training.startTime | date:'yyyy. MM. dd. HH:mm':'':'hu' }} - {{ training.endTime | date:'HH:mm':'':'hu' }}</p>
     <p><span class="font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-300 ease-in-out">Max résztvevő:</span> {{ training.maxParticipant }} fő</p>
   </div>
 

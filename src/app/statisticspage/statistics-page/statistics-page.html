@@ -54,7 +54,7 @@
                     [style.height.%]="getBarHeightPercent(day.guestNumber, getMaxDay())"
                     style="min-height: 4px">
                   </div>
-                  <span class="text-xs text-gray-500 dark:text-gray-400 truncate w-full text-center">{{ day.date | slice:5 }}</span>
+                  <span class="text-xs text-gray-500 dark:text-gray-400 truncate w-full text-center">{{ day.date | date:'MM. dd.':'':'hu' }}</span>
                 </div>
               }
             </div>
@@ -74,7 +74,7 @@
                     [style.height.%]="getBarHeightPercent(week.guestNumber, getMaxWeek())"
                     style="min-height: 4px">
                   </div>
-                  <span class="text-xs text-gray-500 dark:text-gray-400 truncate w-full text-center">{{ week.startOfWeek | slice:0:10 }}</span>
+                  <span class="text-xs text-gray-500 dark:text-gray-400 truncate w-full text-center">{{ week.startOfWeek | date:'yyyy. MM. dd.':'':'hu' }}</span>
                 </div>
               }
             </div>
@@ -99,7 +99,7 @@
               <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-800 transition-colors">
                 @for (day of dayStats; track day.date) {
                   <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                    <td class="px-6 py-3 text-sm text-gray-700 dark:text-gray-300">{{ day.date }}</td>
+                    <td class="px-6 py-3 text-sm text-gray-700 dark:text-gray-300">{{ day.date | date:'yyyy. MM. dd. (EEEE)':'':'hu' }}</td>
                     <td class="px-6 py-3 text-sm font-semibold text-gray-800 dark:text-white text-right">{{ day.guestNumber }}</td>
                   </tr>
                 }

@@ -16,7 +16,7 @@
             </svg>
             <div class="leading-relaxed">
                 <span class="block">Kártya # ...{{ card.code.slice(-5) }}</span>
-                <span class="text-[11px] text-gray-500 dark:text-gray-400">Létrehozva: {{ card.createdAt | date:'short':'':'hu' }}</span>
+                <span class="text-[11px] text-gray-500 dark:text-gray-400">Létrehozva: {{ card.createdAt | date:'yyyy. MM. dd. HH:mm':'':'hu' }}</span>
             </div>
         </div>
         }

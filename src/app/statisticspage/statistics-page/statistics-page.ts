@@ -2,12 +2,12 @@ import { Component, inject } from '@angular/core';
 import { GymStatDayItem, GymStatWeekItem } from '../models/gymstatistics.model';
 import { ThemeService } from '../../services/theme.service';
 import { StatisticsService } from '../services/statistics-service';
-import { NgClass, SlicePipe } from '@angular/common';
+import { NgClass, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-statistics-page',
-  imports: [NgClass, FormsModule, SlicePipe],
+  imports: [NgClass, FormsModule, DatePipe],
   templateUrl: './statistics-page.html',
   styleUrl: './statistics-page.css',
 })

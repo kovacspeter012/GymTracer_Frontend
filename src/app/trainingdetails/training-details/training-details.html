@@ -142,8 +142,8 @@
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                   </svg>
                   <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors duration-300 ease-in-out">Kezdés</p>
-                    <p class="text-gray-800 dark:text-gray-100 font-semibold transition-colors duration-300 ease-in-out">{{ training.startTime | date:'short' }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors duration-300 ease-in-out">Dátum</p>
+                    <p class="text-gray-800 dark:text-gray-100 font-semibold transition-colors duration-300 ease-in-out">{{ training.startTime | date:'yyyy. MM. dd.':'':'hu' }}</p>
                   </div>
                 </div>
 
@@ -154,8 +154,8 @@
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                   <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors duration-300 ease-in-out">Befejezés</p>
-                    <p class="text-gray-800 dark:text-gray-100 font-semibold transition-colors duration-300 ease-in-out">{{ training.endTime | date:'short' }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors duration-300 ease-in-out">Időpont</p>
+                    <p class="text-gray-800 dark:text-gray-100 font-semibold transition-colors duration-300 ease-in-out">{{ training.startTime | date:'HH:mm' : '' : 'hu' }} - {{ training.endTime | date:'HH:mm' : '' : 'hu' }}</p>
                   </div>
                 </div>
 
@@ -285,7 +285,7 @@
 
                   <td class="flex sm:table-cell justify-between items-center text-center px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-100 dark:border-gray-800 sm:border-none whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300 ease-in-out">
                     <span class="sm:hidden text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Ideje</span>
-                    <span>{{ user.applicationDate | date:'medium' }}</span>
+                    <span>{{ user.applicationDate | date:'yyyy. MM. dd. HH:mm':'':'hu' }}</span>
                   </td>
 
                   <td class="flex sm:table-cell justify-between items-center text-center px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-100 dark:border-gray-800 sm:border-none whitespace-nowrap">
