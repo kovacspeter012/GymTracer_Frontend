@@ -8,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [NgClass, RouterLink, NgOptimizedImage, MatSlideToggleModule],
+  imports: [NgClass, RouterLink, MatSlideToggleModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
