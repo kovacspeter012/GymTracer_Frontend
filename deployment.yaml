@@ -1,24 +1,22 @@
-# kubectl create secret docker-registry ghcr-auth-secret --docker-server=ghcr.io --docker-username=bognarpal --docker-password=<TOKEN>
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cicd-13c-deployment
+  name: gymtracer-frontend-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cicd-13c
+      app: gymtracer-frontend
 
   template:
     metadata:
       labels:
-        app: cicd-13c
+        app: gymtracer-frontend
 
     spec:
       containers:
-        - name: cicd-13c-container
-          image: ghcr.io/bognarpal/k8s-cicd-13c:1773751988
+        - name: gymtracer-frontend-container
+          image: ghcr.io/bendehuba/gymtracer-frontend:1773751988
           ports:
             - containerPort: 80
       imagePullSecrets:
@@ -29,11 +27,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cicd-13c-clusterip
+  name: gymtracer-frontend-clusterip
 spec:
   type: ClusterIP
   selector:
-    app: cicd-13c
+    app: gymtracer-frontend
   ports: 
     - protocol: TCP
       port: 80
@@ -41,24 +39,42 @@ spec:
 
 ---
 
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gymtracer-frontend-cert
+spec:
+  secretName: gymtracer-frontend-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - gymtracer.jcloud.jedlik.cloud
+
+---
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cicd-13c-ingress
+  name: gymtracer-frontend-ingress
   annotations:
-    # nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.32.0/24, 193.225.219.140/32 
-    # nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
-  ingressClassName: nginx 
+  ingressClassName: nginx
+
+  tls:
+    - hosts:
+      - gymtracer.jcloud.jedlik.cloud
+      secretName: gymtracer-frontend-tls
 
   rules:
-    - host: cicd13c-bognarpal.jcloud.jedlik.cloud
+    - host: gymtracer.jcloud.jedlik.cloud
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: cicd-13c-clusterip
+                name: gymtracer-frontend-clusterip
                 port:
                   number: 80  
