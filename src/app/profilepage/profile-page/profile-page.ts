@@ -35,6 +35,7 @@ export class ProfilePage implements OnInit {
   copyOfUserData: UserProfileModel | null = null;
   isModifing = false;
   isDeleteing = false;
+  isLoading = false;
 
   tickets: OwnedTicketData[] = [];
   get entryTickets(){
@@ -51,14 +52,17 @@ export class ProfilePage implements OnInit {
   mainGateId: string | number = 0;
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.userdataService.getUserData(this.authService.actingUser!.id).subscribe({
       next: (res) => {
         this.userData = res;
         if(this.authService.pretendedUser) this.authService.setPretendedUser(res);
         else this.authService.setUser(res);
+
+        this.isLoading = false;
       },
       error: (error) => {
-        console.log(error.url);
+        this.isLoading = false;
       }
     });
 
@@ -80,16 +84,18 @@ export class ProfilePage implements OnInit {
   }
 
   isSuccessful($event: boolean) {
-    
+    this.isLoading = true;
     this.isModifing = false;
     this.userdataService.getUserData(this.authService.actingUser!.id).subscribe({
       next: (res) => {
         this.userData = res;
         if(this.authService.pretendedUser) this.authService.setPretendedUser(res);
         else this.authService.setUser(res);
+
+        this.isLoading = false;
       },
       error: (error) => {
-        console.log(error.url);
+        this.isLoading = false;
       }
     });
   }
