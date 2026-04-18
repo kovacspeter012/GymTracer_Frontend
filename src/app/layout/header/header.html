@@ -20,8 +20,18 @@
         <p class="ml-15 text-2xl font-bold transition-color duration-300 ease-in-out text-black dark:text-white">GymTracer</p>
       </a>
 
-      <button #burgerButton class="nav:hidden p-2 rounded focus:outline-none cursor-pointer hover:bg-black/10" (click)="toggleMenu()">
-        <img class="w-8 h-8" src="images/hamburger.svg" alt="Menu icon"/>
+      <button
+        #burgerButton 
+        class="self-center nav:hidden max-nav:my-1 w-11 h-11 rounded-full hover:bg-black/10 transition-colors duration-300 ease-in-out focus:outline-none cursor-pointer flex items-center justify-center relative overflow-hidden"
+        (click)="toggleMenu()">
+        <img class="w-8 h-8 absolute transition-opacity duration-300 ease-in-out"
+            [ngClass]="theme.isDarkMode ? 'opacity-0' : 'opacity-100'"
+            src="images/hamburger_light.svg" />
+
+        <img class="w-8 h-8 absolute transition-opacity duration-300 ease-in-out"
+            [ngClass]="theme.isDarkMode ? 'opacity-100' : 'opacity-0'"
+            src="images/hamburger_dark.svg" />
+            
       </button>
     </div>
 
@@ -69,7 +79,7 @@
               src="images/dark_mode.svg" />
         </button>
         @if(auth.actingUserRole !== UserRole.not_found){
-          <div class="flex flex-col nav:flex-row items-center justify-center max-nav:py-6 max-nav:border-t nav:pl-4 nav:ml-1 nav:border-l transition-colors duration-300 ease-in-out border-gray-800 max-nav:border-gray-800/40 dark:border-gray-300 max-nav:dark:border-gray-300/40 gap-4 nav:gap-5">
+          <div class="flex flex-col nav:flex-row items-center justify-center max-nav:pt-4 max-nav:pb-2 max-nav:border-t nav:pl-4 nav:ml-1 nav:border-l transition-colors duration-300 ease-in-out border-gray-800 max-nav:border-gray-800/40 dark:border-gray-300 max-nav:dark:border-gray-300/40 gap-4 nav:gap-5">
             
             <div class="flex flex-col items-center justify-center leading-tight">
               <p class="font-semibold truncate max-w-[200px] transition-colors duration-300 ease-in-out text-gray-900 dark:text-gray-100" [title]="auth.user?.name">
