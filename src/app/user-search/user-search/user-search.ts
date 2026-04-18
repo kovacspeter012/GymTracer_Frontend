@@ -112,8 +112,7 @@ export class UserSearch implements OnInit {
       email: user.email,
       role: user.role
     };
-    this.auth.pretendedUser = userModel;
-    localStorage.setItem('pretended_user', JSON.stringify(userModel));
+    this.auth.setPretendedUser(userModel);
     this.router.navigate(['/profile']);
   }
 

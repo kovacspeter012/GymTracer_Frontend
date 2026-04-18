@@ -19,7 +19,7 @@ export class OnbehalfBanner {
 
   exit() {
     this.auth.pretendedUser = null;
-    localStorage.removeItem('pretended_user');
+    this.auth.removePretendedUser();
     this.router.navigate(['/users']);
   }
 }

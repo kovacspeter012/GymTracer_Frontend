@@ -66,9 +66,7 @@ export class TrainingDetails {
 
   canApply() {
     if (!this.training) return false;
-    if (this.auth.actingUserRole === UserRole.trainer ||
-        this.auth.actingUserRole === UserRole.staff ||
-        this.auth.actingUserRole === UserRole.admin) return false;
+    if (this.auth.actingUser?.id == this.training.trainer.id) return false;
 
     if (this.training.users && this.auth.actingUser) {
       return !this.training.users.some(u => u.id === this.auth.actingUser?.id);

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { CarddataService } from '../services/carddata-service';
 import { AuthService } from '../../services/auth.service';
 import { CardDataModel } from '../userprofilemodels/carddata.model';
@@ -19,7 +19,8 @@ export class CardsList implements OnInit {
   authService = inject(AuthService);
   cardIsBeingShown = false;
 
-  cardsOfUser: CardDataModel[] = [];
+  @Input() cardsOfUser: CardDataModel[] = [];
+  @Output() cardsOfUserChange = new EventEmitter<CardDataModel[]>
   selectedCard!: CardDataModel | null;
 
   ngOnInit(): void {
@@ -30,9 +31,11 @@ export class CardsList implements OnInit {
     return this.carddataService.getCardsOfUser(this.authService.actingUser!.id).subscribe({
       next: (res) => {
         this.cardsOfUser = res;
+        this.cardsOfUserChange.emit(res);
       },
       error: (error) => {
         this.cardsOfUser = [];
+        this.cardsOfUserChange.emit([]);
       }
     });
   }

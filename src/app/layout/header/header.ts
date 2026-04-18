@@ -1,6 +1,6 @@
 import { NgClass, NgOptimizedImage } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { Component, ElementRef, HostListener, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {MatSlideToggle, MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
 import { UserRole } from '../../models/user.role.model';
@@ -8,12 +8,12 @@ import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [NgClass, RouterLink, NgOptimizedImage, MatSlideToggleModule],
+  imports: [NgClass, RouterLink, MatSlideToggleModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header implements OnInit, OnDestroy {
-    theme = inject(ThemeService);
+  theme = inject(ThemeService);
   auth = inject(AuthService);
   private router = inject(Router);
 
@@ -24,6 +24,10 @@ export class Header implements OnInit, OnDestroy {
   remainingTime: string = '';
   private timerInterval: number | undefined;
 
+  @ViewChild('burgerButton') burgerButton?: ElementRef<HTMLButtonElement>;
+  @ViewChild('themeButton') themeButton?: ElementRef<HTMLButtonElement>;
+  @ViewChild('staffSlide', { read: ElementRef }) staffSlide?: ElementRef;
+
   ngOnInit() {
     this.startCountdown();
   }
@@ -31,6 +35,24 @@ export class Header implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
+    }
+  }
+
+  @HostListener('document:click',['$event'])
+  onDocumentClick(event: MouseEvent){
+    if(!this.burgerButton) return;
+
+    const clickedBurger = this.burgerButton.nativeElement.contains(event.target as Node);
+    if (clickedBurger) return;
+
+    const clickedTheme = this.themeButton && this.themeButton.nativeElement.contains(event.target as Node);
+    if(clickedTheme) return;
+
+    const clickedSlide = this.staffSlide && this.staffSlide.nativeElement.contains(event.target as Node);
+    if(clickedSlide) return;
+
+    if(this.menuOpen){
+      this.menuOpen = false;
     }
   }
 
