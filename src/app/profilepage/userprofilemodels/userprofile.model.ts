@@ -7,4 +7,5 @@ export interface UserProfileModel {
     birthDate:    Date | null;
     creationDate: Date;
     role:         UserRole;
+    wentInToday:  boolean;
 }

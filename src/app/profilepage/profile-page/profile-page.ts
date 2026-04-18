@@ -166,6 +166,7 @@ export class ProfilePage implements OnInit {
           setTimeout(() => this.gateMessage = null, 3000);
 
           this.isGateLoading = false;
+          if(this.userData) this.userData.wentInToday = true;
         },
         error: (err) => {
           let errorMsg = 'Ismeretlen hiba történt.';
