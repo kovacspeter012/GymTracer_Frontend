@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: gymtracer-frontend-container
-          image: ghcr.io/bendehuba/gymtracer-frontend:1776537522
+          image: ghcr.io/bendehuba/gymtracer-frontend:1776549058
           ports:
             - containerPort: 80
       imagePullSecrets:
