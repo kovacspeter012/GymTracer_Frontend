@@ -37,6 +37,9 @@ export class ProfilePage implements OnInit {
   isDeleteing = false;
 
   tickets: OwnedTicketData[] = [];
+  get entryTickets(){
+    return this.tickets.filter(t => t.trainingId == null);
+  }
   entryWithoutTicket = false;
 
   paymentId: number | null = null;

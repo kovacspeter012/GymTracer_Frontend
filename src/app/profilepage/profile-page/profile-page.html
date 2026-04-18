@@ -58,15 +58,15 @@
             <div class="sm:col-span-2 bg-gray-100/50 dark:bg-gray-900/50 p-5 rounded-2xl border border-gray-200/50 dark:border-gray-800 transition-colors" [ngClass]="theme.getColor()">
                 
                 <div class="flex items-center justify-between mb-4">
-                    <p class="text-gray-700 dark:text-gray-400 text-xs font-bold uppercase tracking-widest">Jegyek</p>
+                    <p class="text-gray-700 dark:text-gray-400 text-xs font-bold uppercase tracking-widest">Belépőjegyek</p>
                     <span class="text-xs font-medium bg-gray-300 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-md transition-colors">
-                        {{ tickets ? tickets.length : 0 }} Elérhető
+                        {{ entryTickets ? entryTickets.length : 0 }} Elérhető
                     </span>
                 </div>
                 
                 <div class="flex flex-wrap gap-4 mb-6">
-                    @if (tickets && tickets.length > 0) {
-                        @for (ticket of tickets; track $index) {
+                    @if (entryTickets && entryTickets.length > 0) {
+                        @for (ticket of entryTickets; track $index) {
                             <app-tickets-card class="flex-1 min-w-[300px]"
                                 [ticket]="ticket"
                                 [isPaying]="paymentId === ticket.paymentId" 
@@ -75,7 +75,7 @@
                         }
                     } @else {
                         <div class="w-full text-center text-gray-500 dark:text-gray-400 py-6 bg-gray-200/50 dark:bg-gray-800/50 rounded-xl border border-gray-300/50 dark:border-gray-700 shadow-inner text-sm">
-                            A felhasználónak nincsenek elérhető jegyei.
+                            A felhasználónak nincsenek elérhető belépőjegyei.
                         </div>
                     }
                 </div>
