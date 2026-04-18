@@ -51,7 +51,7 @@
                 <div class="flex-1 flex flex-col items-center gap-1">
                   <span class="text-xs font-bold text-gray-700 dark:text-gray-300">{{ day.guestNumber }}</span>
                   <div class="w-full bg-primary-500 rounded-t transition-all hover:bg-primary-400"
-                    [style.height.%]="getBarHeightPercent(day.guestNumber, getMaxDay())"
+                    [style.height.px]="getBarHeightPixel(day.guestNumber, getMaxDay())"
                     style="min-height: 4px">
                   </div>
                   <span class="text-xs text-gray-500 dark:text-gray-400 truncate w-full text-center">{{ day.date | date:'MM. dd.':'':'hu' }}</span>
@@ -71,7 +71,7 @@
                 <div class="flex-1 flex flex-col items-center gap-1">
                   <span class="text-xs font-bold text-gray-700 dark:text-gray-300">{{ week.guestNumber }}</span>
                   <div class="w-full bg-primary-600 rounded-t transition-all hover:bg-primary-500"
-                    [style.height.%]="getBarHeightPercent(week.guestNumber, getMaxWeek())"
+                    [style.height.px]="getBarHeightPixel(week.guestNumber, getMaxWeek())"
                     style="min-height: 4px">
                   </div>
                   <span class="text-xs text-gray-500 dark:text-gray-400 truncate w-full text-center">{{ week.startOfWeek | date:'yyyy. MM. dd.':'':'hu' }}</span>
