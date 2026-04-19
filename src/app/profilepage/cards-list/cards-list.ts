@@ -30,6 +30,10 @@ export class CardsList implements OnInit {
   getCards() {
     return this.carddataService.getCardsOfUser(this.authService.actingUser!.id).subscribe({
       next: (res) => {
+        res.forEach((card) => {
+          const utcDate = card.createdAt + 'Z';
+          card.createdAt = new Date(utcDate);
+        });
         this.cardsOfUser = res;
         this.cardsOfUserChange.emit(res);
       },
