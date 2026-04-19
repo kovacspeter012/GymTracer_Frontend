@@ -38,12 +38,12 @@
                 
                  @if (!currentUser) {
                     <a [routerLink]="['/registration']"
-                    class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:cursor-pointer text-center align-middle">
+                    class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:cursor-pointer text-center">
                     Regisztráció
                     </a>
                 } @else {
                     <a [routerLink]="['/tickets']"
-                        class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:cursor-pointer text-center align-middle">
+                        class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:cursor-pointer text-center">
                         Jegy vásárlása
                     </a>
                 }
