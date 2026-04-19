@@ -13,15 +13,15 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-700 text-gray-200">
-                        <th class="py-4 px-6 font-bold uppercase text-sm">Jegy típus</th>
-                        <th class="py-4 px-6 font-bold uppercase text-sm text-right">Ár</th>
+                        <th class="py-4 px-4 font-bold uppercase text-sm">Jegy típus</th>
+                        <th class="py-4 px-4 font-bold uppercase text-sm text-right">Ár</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-700">
                     @for (ticket of tickets; track $index) {
                         <tr class="hover:bg-gray-750 transition-colors">
-                            <td class="py-4 px-6 text-gray-200">{{ ticket.description }}</td>
-                            <td class="py-4 px-6 text-right font-bold text-primary-500">{{ ticket.price }} Ft</td>
+                            <td class="py-4 px-4 text-gray-200">{{ ticket.description }}</td>
+                            <td class="py-4 px-4 text-right font-bold text-primary-500">{{ ticket.price }} Ft</td>
                         </tr>
                     }
                     
