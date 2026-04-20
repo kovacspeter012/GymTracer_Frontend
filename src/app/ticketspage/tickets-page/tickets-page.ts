@@ -102,7 +102,6 @@ export class TicketsPage implements OnInit {
         this.getOwnedTickets();
       },
       error: (error) => {
-        console.log(error.message);
       }
     });
   }
@@ -115,7 +114,7 @@ export class TicketsPage implements OnInit {
         this.getOwnedTickets();
       },
       error: (error) => {
-        console.log(error.message);
+        alert(error.message);
       }
     });
   }
@@ -127,7 +126,6 @@ export class TicketsPage implements OnInit {
         this.trainingTickets = res.filter(t => t.type === TicketType.training && t.isStudent === this.showTrainingStudentTickets);
       },
       error: (error) => {
-        console.log(error.url);
       }
     });
   }
@@ -135,10 +133,13 @@ export class TicketsPage implements OnInit {
   getOwnedTickets(){
     this.ticketsService.getOwnedTicketsOfUser(this.authService.actingUser!.id).subscribe({
       next: (res) => {
+        res.forEach((ticket) => {
+          const utcDate = ticket.expirationDate + 'Z';
+          ticket.expirationDate = new Date(utcDate);
+        });
         this.ownedTickets = res;
       },
       error: (error) => {
-        console.log(error.url);
       }
     });
   }
