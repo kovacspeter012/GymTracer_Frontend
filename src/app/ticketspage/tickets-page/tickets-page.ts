@@ -114,7 +114,7 @@ export class TicketsPage implements OnInit {
         this.getOwnedTickets();
       },
       error: (error) => {
-        alert(error.message);
+        alert(error.error);
       }
     });
   }
