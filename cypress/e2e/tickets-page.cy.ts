@@ -239,7 +239,6 @@ describe('Tickets page e2e interactions', () => {
     cy.get('#cardName').should('be.visible');
     cy.get('app-payment-modal button').last().click();
 
-    // The error message should appear with class p-2
     cy.get('app-payment-modal').within(() => {
       cy.get('.p-2').should('be.visible');
     });
@@ -249,7 +248,6 @@ describe('Tickets page e2e interactions', () => {
     mockTicketApis();
     openTicketsPage();
 
-    // Get the current ticket count before the error
     cy.get('app-tickets-card').then(($cards) => {
       const initialCount = $cards.length;
 
@@ -261,7 +259,6 @@ describe('Tickets page e2e interactions', () => {
       cy.get('#studentFilter1').check({ force: true });
       cy.wait('@getTicketsError');
       
-      // Verify the error was handled - ticket list should remain unchanged or update appropriately
       cy.get('app-tickets-card').should('have.length', initialCount);
     });
   });
@@ -284,7 +281,7 @@ describe('Tickets page e2e interactions', () => {
       cy.contains('app-owned-ticket-card', 'Fizetesre varo napijegy').within(() => {
         cy.contains('a', 'Fizetés').click();
       });
-      // Wait for payment form to appear
+
       cy.get('app-payment-modal').should('be.visible');
       cy.get('#cardName').should('be.visible');
       fillPaymentForm();
