@@ -93,7 +93,7 @@ export class UserSearch implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = err.error || 'Nem sikerült keresni a felhasználók között.';
+        this.errorMessage = err.error.message || 'Nem sikerült keresni a felhasználók között.';
         this.isLoading = false;
       }
     });
