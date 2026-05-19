@@ -229,7 +229,7 @@ describe('Tickets page e2e interactions', () => {
     cy.get('app-ticket-modal button').last().click();
     cy.get('app-payment-modal button').last().click();
 
-    cy.get('app-payment-modal .border-4').should('be.visible');
+    cy.get('app-payment-modal .p-2').should('be.visible');
   });
 
   it('spies on console.log when ticket refresh fails', () => {
