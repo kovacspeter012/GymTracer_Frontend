@@ -51,7 +51,7 @@ export class StatisticsPage {
     return Math.max(...this.weekStats.map(w => w.guestNumber), 1);
   }
 
-  getBarHeightPercent(value: number, max: number): number {
-    return Math.round((value / max) * 100);
+  getBarHeightPixel(value: number, max: number): number {
+    return Math.round(150 * (value / max));
   }
 }
